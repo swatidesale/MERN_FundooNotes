@@ -148,30 +148,30 @@ class Note extends Component {
 
                         />
 
-                    <div style={{width:600,height:40,marginTop:-12}}>
-                        <IconButton color="primary" >
+                    <div style={{width:600,height:40,marginTop:-5}}>
+                        <IconButton color="primary" id="notebuttons">
                             <img src={remindme} alt="remindme" id="noteicons"/>
                         </IconButton>
-                        <IconButton color="primary" >
+                        <IconButton color="primary" id="notebuttons">
                             <img src={collaborator} alt="collaborator" id="noteicons"/>
                         </IconButton>
 
-                        <IconButton color="primary" >
+                        <IconButton color="primary" id="notebuttons">
                             <img src={changecolor} alt="changecolor" id="noteicons"/>
                         </IconButton>
 
-                        <IconButton color="primary" >
+                        <IconButton color="primary" id="notebuttons">
                             <img src={newnotewithimage} alt="newnotewithimage" id="noteicons"/>
                         </IconButton>
 
-                        <IconButton color="primary" >
+                        <IconButton color="primary" id="notebuttons">
                             <img src={archive} alt="archive" id="noteicons"/>
                         </IconButton>
                         {/* <IconButton color="primary" >
                             <img src={more} alt="more" id="noteicons"/>
                         </IconButton> */}
 
-                        <IconButton color="primary" 
+                        <IconButton color="primary" id="notebuttons"
                             aria-owns={anchorEl ? 'simple-menu-items' : null}
                             aria-haspopup="true"
                             onClick={this.handleClick}
@@ -189,10 +189,10 @@ class Note extends Component {
                             <MenuItem onClick={this.handleClose}>Add label</MenuItem>
                         </Menu>
                         
-                        <IconButton color="primary" >
+                        <IconButton color="primary" id="notebuttons">
                             <img src={undo} alt="undo" id="noteicons"/>
                         </IconButton>
-                        <IconButton color="primary" >
+                        <IconButton color="primary" id="notebuttons">
                             <img src={redo} alt="redo" id="noteicons"/>
                         </IconButton>
 

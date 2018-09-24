@@ -20,6 +20,7 @@ router.get('/notes', (req,res) => {
 //       res.json(products);
 //     });
 //   });
+
 /*----- Save Note -----*/
 // @route POST api/notes
 // @desc POST a note
@@ -30,7 +31,9 @@ router.post('/notes', (req,res) => {
         notedata: req.body.notedata,
         ispin: req.body.ispin,
         istrash: req.body.istrash,
-        isarchive: req.body.isarchive
+        isarchive: req.body.isarchive,
+        background: req.body.background,
+        reminder: req.body.reminder
     });
 
     // newNote.save().then(note => res.json(note));

@@ -130,7 +130,7 @@ class TrashNotes extends Component {
                             <div className="display-notes-div">
                             {/* {localStorage.getItem("trashNotesCount")} */}
                             <div id="div_element" className="displaynotes column ">
-                                <Card style={{ width: '100%', borderRadius:0}}>
+                                <Card style={{ width: '100%', backgroundColor:note.background, borderRadius:0}}>
                                     <div style={{ width: '90%', marginTop: 10, marginLeft: 10, fontWeight: 'bolder', position: 'relative' }}>
                                         <div style={{width:'80%', paddingBottom: 20, paddingTop: 10 }}>
                                             {note.notetitle}

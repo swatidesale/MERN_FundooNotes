@@ -6,7 +6,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 // import FormControlLabel from '@material-ui/core/FormControlLabel';
-// import Chip from '@material-ui/core/Chip';
+import Chip from '@material-ui/core/Chip';
 // import Checkbox from '@material-ui/core/Checkbox';
 import Tooltip from '@material-ui/core/Tooltip';
 // import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
@@ -27,9 +27,11 @@ import remindme from '../../../assets/icons/reminder.svg';
 import redo from '../../../assets/icons/redo.svg';
 import axios from 'axios';
 import $ from 'jquery';
+import NoteController from '../../../controllers/NoteController.js';
 // import { createBrowserHistory } from 'history';
 
 // const history = createBrowserHistory();
+const noteCtrl = new NoteController();
 
 class ArchiveNotes extends Component {
     constructor() {
@@ -96,10 +98,6 @@ class ArchiveNotes extends Component {
         this.setState({ anchorElRemind: null });
     };
 
-    handleDelete(key, data) {
-        // noteCtrl.removeReminder(key, data);
-    }
-
     handleDeleteLabel(key, data) {
         // labelCtrl.removeLabel(key, data);
     }
@@ -116,18 +114,6 @@ class ArchiveNotes extends Component {
         //     }
         //   });
 
-    }
-
-    onUpdateNote(key,note) {
-        // const { notetitle, notedata, ispin, istrash, isarchive } = this.state;
-        const ispin  = note.ispin;
-        const isarchive = note.isarchive;
-        const istrash = note.istrash;
-        axios.put('/api/notes/notes/'+key, { ispin, isarchive, istrash })
-        .then((result) => {
-            // history.push('/home/notes');
-            this.reload();
-        });    
     }
 
     reload() {
@@ -150,36 +136,6 @@ class ArchiveNotes extends Component {
         // });
     }
 
-    isPinNote(key, data) {
-        if( data.ispin === true) {
-            data.ispin = false;
-        }
-        else {
-            data.ispin = true;
-        }
-        this.onUpdateNote(key,data);
-    }
-
-    isArchiveNote(key, data) {
-        if( data.isarchive === true) {
-            data.isarchive = false;
-        }
-        else {
-            data.isarchive = true;
-        }
-        this.onUpdateNote(key,data);
-    }
-
-    isTrashNote(key, data) {
-        if( data.istrash === true) {
-            data.istrash = false;
-        }
-        else {
-            data.istrash = true;
-        }
-        this.onUpdateNote(key,data);
-    }
-
     // onClickEdit(title, notedata, key, data) {
     //     console.log("onClickEdit");
     //     if (title !== null || notedata !== null) {
@@ -194,22 +150,6 @@ class ArchiveNotes extends Component {
     //         alert("Enter data to update");
     //     }
     // }
-
-    getToday(key, data) {
-        // noteCtrl.getToday(key, data);
-    }
-
-    getTomorrow(key, data) {
-        // noteCtrl.getTomorrow(key, data);
-    }
-
-    getNextWeek(key, data) {
-        // noteCtrl.getNextWeek(key, data);
-    }
-
-    changeColor(key,data,btn) {
-        // noteCtrl.changeColor(key,data,btn);
-    }
 
     getLabel(key, data, labelName) {
         // labelCtrl.getLabelData(key, data, labelName);
@@ -231,7 +171,7 @@ class ArchiveNotes extends Component {
                             <div className="display-notes-div">
                             {/* {localStorage.getItem("archiveNotesCount")} */}
                             <div  className="displaynotes column">
-                            <Card style={{width:'100%',borderRadius:0 }}>
+                            <Card style={{width:'100%', backgroundColor:note.background, borderRadius:0 }}>
                                 <div style={{width: '90%', marginTop: 10, marginLeft: 10, fontWeight: 'bolder', position: 'relative' }}>
                                     <div style={{width:'80%', paddingBottom: 20, paddingTop: 10 }} onClick={this.handleClickOpen}>
                                         {note.notetitle}
@@ -241,7 +181,7 @@ class ArchiveNotes extends Component {
                                             <IconButton style={{ height: 30, width: 30, position: 'absolute', display: 'inline-flex', top: -5, right: '-7%'  }}
                                                 color="primary"
                                                 type="submit"
-                                                onClick={() => { this.isPinNote(note._id, note); this.isArchiveNote(note._id, note) }}
+                                                onClick={() => { noteCtrl.isPinNote(note._id, note); noteCtrl.isArchiveNote(note._id, note) }}
                                             >
                                                 <img src={pinnote} alt="pinnote" id="noteicons" />
                                             </IconButton>
@@ -251,21 +191,21 @@ class ArchiveNotes extends Component {
 
                                 <div onClick={this.handleClickOpen} style={{ width: '100%', marginLeft: 10, marginBottom: 20,fontSize:20,opacity:0.7  }}>{note.notedata}</div>
 
-                                {/* {note.reminder ?
+                                {note.reminder ?
                                     <Chip
                                         avatar={
                                             <img src={pickdate} alt="pickdate" id="avtarremindermenuicons" />
                                         }
-                                        label={data.reminder}
+                                        label={note.reminder}
                                         // onClick={handleClick}
-                                        onDelete={() => this.handleDelete(note._id, note)}
+                                        onDelete={() => noteCtrl.handleDeleteReminder(note._id, note)}
                                         style={{ borderRadius: 1, height: 24, marginLeft: 10, fontSize: 11 }}
                                     />
                                     :
                                     null
                                 }
 
-                                {note.label ?
+                                {/* {note.label ?
                                     <Chip
                                         label={data.label}
                                         onDelete={() => this.handleDeleteLabel(note._id, note)}
@@ -293,9 +233,9 @@ class ArchiveNotes extends Component {
                                     >
 
                                         <div id="reminderdiv" >Reminder : </div>
-                                        <MenuItem id="menuitems" onClick={() => { this.handleCloseReminder(); this.getToday(note._id, note) }}>Later Today<div id="remindermenu">8:00 PM</div></MenuItem>
-                                        <MenuItem id="menuitems" onClick={() => { this.handleCloseReminder(); this.getTomorrow(note._id, note) }}>Tomorrow<div id="remindermenu">8:00 AM</div></MenuItem>
-                                        <MenuItem id="menuitems" onClick={() => { this.handleCloseReminder(); this.getNextWeek(note._id, note) }}>Next Week<div id="remindermenu">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Mon, 8:00 AM</div></MenuItem>
+                                        <MenuItem id="menuitems" onClick={() => { this.handleCloseReminder(); noteCtrl.getToday(note._id, note) }}>Later Today<div id="remindermenu">8:00 PM</div></MenuItem>
+                                        <MenuItem id="menuitems" onClick={() => { this.handleCloseReminder(); noteCtrl.getTomorrow(note._id, note) }}>Tomorrow<div id="remindermenu">8:00 AM</div></MenuItem>
+                                        <MenuItem id="menuitems" onClick={() => { this.handleCloseReminder(); noteCtrl.getNextWeek(note._id, note) }}>Next Week<div id="remindermenu">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Mon, 8:00 AM</div></MenuItem>
                                         <MenuItem id="menuitems" onClick={this.handleCloseReminder}>
                                             <img src={pickdate} alt="pickdate" id="remindermenuicons" />
                                             Pick date & time
@@ -329,67 +269,67 @@ class ArchiveNotes extends Component {
                                             open={Boolean(anchorElColor)}
                                             onClose={this.handleCloseColor}
                                         >
-                                            <Tooltip title="White">
+                                            {/* <Tooltip title="White"> */}
                                                 <IconButton id="color-btn" 
                                                     style={{ backgroundColor: "white" }}
-                                                    onClick={() => {this.handleCloseColor();this.changeColor(note._id, note,1)}} />
-                                            </Tooltip>
+                                                    onClick={() => {this.handleCloseColor();noteCtrl.changeColor(note._id, note,1)}} />
+                                            {/* </Tooltip> */}
                                             <Tooltip title="Red">
                                                 <IconButton id="color-btn" 
                                                     style={{ backgroundColor: "rgb(255, 138, 128)" }}
-                                                    onClick={() => {this.handleCloseColor();this.changeColor(note._id, note,2)}} />
+                                                    onClick={() => {this.handleCloseColor();noteCtrl.changeColor(note._id, note,2)}} />
                                             </Tooltip>
                                             <Tooltip title="Orange">
                                                 <IconButton id="color-btn" 
                                                     style={{ backgroundColor: "rgb(255, 209, 128)" }}
-                                                    onClick={() => {this.handleCloseColor();this.changeColor(note._id, note,3)}} />
+                                                    onClick={() => {this.handleCloseColor();noteCtrl.changeColor(note._id, note,3)}} />
                                             </Tooltip>
                                             <Tooltip title="Yellow">
                                                 <IconButton id="color-btn" 
                                                     style={{ backgroundColor: "rgb(255, 255, 141)" }}
-                                                    onClick={() => {this.handleCloseColor();this.changeColor(note._id, note,4)}} />
+                                                    onClick={() => {this.handleCloseColor();noteCtrl.changeColor(note._id, note,4)}} />
                                             </Tooltip>
                                             <br></br>
                                             <Tooltip title="Green">
                                                 <IconButton id="color-btn" 
                                                     style={{ backgroundColor: "rgb(204, 255, 144)" }}
-                                                    onClick={() => {this.handleCloseColor();this.changeColor(note._id, note,5)}} />
+                                                    onClick={() => {this.handleCloseColor();noteCtrl.changeColor(note._id, note,5)}} />
                                             </Tooltip>
                                             <Tooltip title="Teal">
                                                 <IconButton id="color-btn" 
                                                     style={{ backgroundColor: "rgb(167, 255, 235)" }}
-                                                    onClick={() => {this.handleCloseColor();this.changeColor(note._id, note,6)}} />
+                                                    onClick={() => {this.handleCloseColor();noteCtrl.changeColor(note._id, note,6)}} />
                                             </Tooltip>
                                             <Tooltip title="Blue">
                                                 <IconButton id="color-btn" 
                                                     style={{ backgroundColor: "rgb(128, 216, 255)" }}
-                                                    onClick={() => {this.handleCloseColor();this.changeColor(note._id, note,7)}} />
+                                                    onClick={() => {this.handleCloseColor();noteCtrl.changeColor(note._id, note,7)}} />
                                             </Tooltip>
                                             <Tooltip title="Dark blue">
                                                 <IconButton id="color-btn" 
                                                     style={{ backgroundColor: "rgb(130, 177, 255)" }}
-                                                    onClick={() => {this.handleCloseColor();this.changeColor(note._id, note,8)}} />
+                                                    onClick={() => {this.handleCloseColor();noteCtrl.changeColor(note._id, note,8)}} />
                                             </Tooltip>
                                             <br></br>
                                             <Tooltip title="Purple">
                                                 <IconButton id="color-btn" 
                                                     style={{ backgroundColor: "rgb(179, 136, 255)" }}
-                                                    onClick={() => {this.handleCloseColor();this.changeColor(note._id, note,9)}} />
+                                                    onClick={() => {this.handleCloseColor();noteCtrl.changeColor(note._id, note,9)}} />
                                             </Tooltip>
                                             <Tooltip title="Pink">
                                                 <IconButton id="color-btn" 
                                                     style={{ backgroundColor: "rgb(248, 187, 208)" }}
-                                                    onClick={() => {this.handleCloseColor();this.changeColor(note._id, note,10)}} />
+                                                    onClick={() => {this.handleCloseColor();noteCtrl.changeColor(note._id, note,10)}} />
                                             </Tooltip>
                                             <Tooltip title="Brown">
                                                 <IconButton id="color-btn" 
                                                     style={{ backgroundColor: "rgb(215, 204, 200)" }}
-                                                    onClick={() => {this.handleCloseColor();this.changeColor(note._id, note,11)}} />
+                                                    onClick={() => {this.handleCloseColor();noteCtrl.changeColor(note._id, note,11)}} />
                                             </Tooltip>
                                             <Tooltip title="Gray">
                                                 <IconButton id="color-btn" 
                                                     style={{ backgroundColor: "rgb(207, 216, 220)" }}
-                                                    onClick={() => {this.handleCloseColor();this.changeColor(note._id, note,12)}} />
+                                                    onClick={() => {this.handleCloseColor();noteCtrl.changeColor(note._id, note,12)}} />
                                             </Tooltip>
                                         </Menu>
 
@@ -403,7 +343,7 @@ class ArchiveNotes extends Component {
                                         <IconButton id="notebuttons" 
                                             color="primary"
                                             type="submit"
-                                            onClick={() => { this.isArchiveNote(note._id, note) }}
+                                            onClick={() => { noteCtrl.isArchiveNote(note._id, note) }}
                                         >
                                             <img src={unarchive} alt="unarchive" id="noteicons" />
                                         </IconButton>
@@ -425,7 +365,7 @@ class ArchiveNotes extends Component {
                                         open={Boolean(anchorEl)}
                                         onClose={this.handleClose}
                                     >
-                                        <Button id="note-menu-btn" onClick={() => { this.handleClose(); this.isTrashNote(note._id, note); this.isArchiveNote(note._id, note) }}>Delete note</Button>
+                                        <Button id="note-menu-btn" onClick={() => { this.handleClose(); noteCtrl.isTrashNote(note._id, note); noteCtrl.isArchiveNote(note._id, note) }}>Delete note</Button>
                                         <br></br>
                                         <Button style={{ paddingLeft: 2 }}
                                             id="note-menu-btn"

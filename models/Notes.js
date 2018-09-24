@@ -20,6 +20,12 @@ const NoteSchema = new Schema({
     isarchive: {
         type: Boolean,
         default: false
+    },
+    background: {
+        type: String
+    },
+    reminder: {
+        type: String
     }
 });
 

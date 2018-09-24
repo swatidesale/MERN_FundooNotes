@@ -80,9 +80,9 @@
 #closebutton {
   width:67px;
   height: 36px;
-  margin-left: 170px;
-  font-size: 12px;
-  font-weight: bold;
+  margin-left: 205px;
+  /* font-size: 12px;
+  font-weight: bold; */
 }
 
 .dashboard {
@@ -156,7 +156,6 @@
   opacity: 0.5;
   margin-top: -5px;
   height:18px;
-  
 }
 
 .profilediv {

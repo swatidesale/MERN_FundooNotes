@@ -31,14 +31,11 @@ class ResetPasswordPage extends Component {
     } 
 
     handleSubmit(event) {
-        console.log("Inside Reset");
         event.preventDefault();
 
         const { password } = this.state;
-        console.log("Inside submit : ");
         axios.post('/api/users/reset',{password})
             .then((result) => {
-                console.log(result);
                 history.push("/login");
         })
         .catch((error) => {

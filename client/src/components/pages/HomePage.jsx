@@ -2,13 +2,10 @@ import React, { Component } from 'react';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { Input, Button } from '@material-ui/core';
-// import Input from '@material-ui/core/Input';
 import IconButton from '@material-ui/core/IconButton';
 import AppBar from '@material-ui/core/AppBar';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Drawer from 'material-ui/Drawer';
-// import Drawer from '@material-ui/core/Drawer';
-
 import ToggleDisplay from 'react-toggle-display';
 // import Tooltip from '@material-ui/core/Tooltip';
 import SearchBar from 'material-ui-search-bar'
@@ -40,12 +37,9 @@ import TrashNotes from '../notes/actions/TrashNotes';
 // import DisplayLabels from '../notes/actions/DisplayLabels';
 // import SearchNotes from '../notes/actions/SearchNotes';
 // import DisplayLabelsOnDialog from '../notes/actions/DisplayLabelOnDialog.jsx';
+import NoteController from '../../controllers/NoteController';
 
-// Get the elements with class="column"
-var elements = document.getElementsByClassName("column");
-
-// Declare a loop variable
-var i;
+const noteCtrl = new NoteController();
 
 class HomePage extends Component {
     constructor() {
@@ -165,18 +159,6 @@ class HomePage extends Component {
         // labelCtrl.createLabel(this.state.newlabel);
     }
 
-    notesInGridView() {
-        for (i = 0; i < elements.length; i++) {
-            elements[i].style.width = "27%";
-        }
-    }
-
-    notesInListView() {
-        for (i = 0; i < elements.length; i++) {
-            elements[i].style.width = "70%";
-        }
-    }
-
     refreshPage() {
         window.location.reload();
     }
@@ -227,7 +209,6 @@ class HomePage extends Component {
                              </Typography>
                             }
                             <SearchBar style={{ height: 48, width: 720, marginLeft: 30 }}
-                                // background:'rgba(0,0,0,0.04)'}} 
                                 onClick={() => this.goToSearch()}
                                 onChange={() => console.log('onChange')}
                                 onRequestSearch={() => console.log('onRequestSearch')} />
@@ -238,14 +219,14 @@ class HomePage extends Component {
 
                              <ToggleDisplay show={this.state.viewbtn}>
                                 <IconButton style={{ marginLeft: 3 }} color="inherit" aria-label="Menu" 
-                                onClick={() => {this.handleViewClick();this.notesInListView()}}>
+                                onClick={() => {this.handleViewClick();noteCtrl.notesInListView()}}>
                                     <img src={listview} alt="listview" id="topicons" />
                                 </IconButton>
                             </ToggleDisplay>
                             
                             <ToggleDisplay show={!this.state.viewbtn}>
                                 <IconButton style={{ marginLeft: 3 }} color="inherit" aria-label="Menu"
-                                 onClick={() => {this.handleViewClick();this.notesInGridView()}}>
+                                 onClick={() => {this.handleViewClick();noteCtrl.notesInGridView()}}>
                                     <img src={gridview} alt="gridview" id="topicons"  style={{height:24,width:24}} />
                                 </IconButton>
                             </ToggleDisplay>
