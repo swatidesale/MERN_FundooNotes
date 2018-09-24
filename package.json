@@ -1,0 +1,28 @@
+{
+  "name": "mernfundooapp",
+  "version": "1.0.0",
+  "description": "Fundoo Notes built with MERN stack",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "server": "nodemon server.js"
+  },
+  "author": "Swati Desale",
+  "license": "MIT",
+  "dependencies": {
+    "async": "^2.6.1",
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.18.3",
+    "concurrently": "^4.0.1",
+    "express": "^4.16.3",
+    "jsonwebtoken": "^8.3.0",
+    "mongoose": "^5.2.15",
+    "morgan": "^1.9.1",
+    "nodemailer": "^4.6.8",
+    "passport": "^0.4.0",
+    "passport-jwt": "^4.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.4"
+  }
+}

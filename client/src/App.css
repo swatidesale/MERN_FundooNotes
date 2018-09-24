@@ -1,0 +1,558 @@
+.actions {
+  height: 20px;
+  width: 90px;
+}
+
+#addaccount {
+  width: 120px;
+  height: 30px;
+  margin-left: 15px;
+  margin-top: 7px;
+  text-transform: initial;
+}
+
+.addnotetitle {
+  height: 43px;
+  width: 600px;
+  margin-top: 30px;
+  margin-left: 500px;
+
+}
+
+.addnotetitleinput {
+  margin-top: 6px;
+  margin-left: 20px;
+}
+
+#addtitleinput {
+  margin-top: 4px;
+  margin-left: 20px;
+}
+
+#addnoteinput {
+  margin-top: 4px;
+  margin-left: 20px;
+}
+
+.addnotedata {
+  height: 133px;
+  width: 600px;
+  margin-top: 30px;
+  margin-left: 500px;
+}
+
+.card {
+  margin-top: 150px;
+  margin-left: 470px;
+  width: 350px;
+  height: 350px;
+  align-self: auto;
+}
+
+.cardnewlabel {
+  width: 300px;
+  height: 156px;
+  margin-top: -50px;
+  margin-left: 505px;
+}
+
+.cardRegister {
+  margin-top: 60px;
+  margin-left: 470px;
+  width: 400px;
+  height: 520px;
+}
+
+.container {
+  margin-top: -40px;
+  margin-left: 55px;
+}
+
+.cardAction {
+  margin-left: 10px;
+}
+
+.containerRegister {
+  margin-top: -40px;
+  margin-left: 75px;
+}
+
+#closebutton {
+  width:67px;
+  height: 36px;
+  margin-left: 170px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.dashboard {
+  width: 1259px;
+  height: 64px;
+}
+
+#drawerbuttons {
+  text-transform: initial;
+  margin-left: -10px;
+  height: 48px;
+  width: 280px;
+}
+
+#editbutton{
+  font: bold;
+  margin-left: 120px;
+  width: 20px;
+  height: 10px;
+}
+
+.forgotPwd {
+  margin-left: 25px;
+}
+
+.forgotPwdBtn {
+  width: 190px;
+  height: 25px;
+}
+
+#imagenotes {
+  opacity: 0.5;
+  margin-left: -112px;
+  margin-right: 40px;
+}
+
+#imagereminder{
+  opacity: 0.5;
+  margin-left: -80px;
+  margin-right: 40px;
+}
+
+#imagecreatelabel {
+  opacity: 0.5;
+  margin-left: -39px;
+  margin-right: 40px;
+}
+
+#imagearchive {
+  opacity: 0.5;
+  margin-left: -103px;
+  margin-right: 40px;
+}
+
+#imagetrash {
+  opacity: 0.5;
+  margin-left: -113px;
+  margin-right: 40px;
+}
+
+#imagecreatedlabel {
+  opacity: 0.5;
+  margin-left: -105px;
+}
+
+.menuItems {
+  width: 250px;
+}
+
+#noteicons {
+  opacity: 0.5;
+  margin-top: -5px;
+  height:18px;
+  
+}
+
+.profilediv {
+  /* width: 275px; */
+  height: 138px;
+  border: 5px;
+  /* top: 64; */
+  /* right: 8px; */
+  /* background-color: aqua; */
+}
+
+.rootdiv {
+  background-color: '#e8e8e8';
+}
+
+.resetPasswordCardAction {
+  margin-top: -10px;
+  margin-left: 60px;
+}
+.resetPasswordBtn {
+  margin-left: 50px;
+  width: 190px;
+  height: 25px;
+}
+
+.signoutdiv {
+  /* width: 317px; */
+  height: 51px;
+  align-self: center;
+  background-color:rgba(0,0,0,.05);
+}
+.signoutbutton {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: black;
+  opacity: 0.5;
+}
+
+.signoutcard {
+  /* margin-left: 975px;
+  margin-top: -73px; */
+  top: 60px;
+  right: 10px;
+  width: 317px;
+  height: 189px;
+  position: absolute;
+}
+
+#signout {
+  height: 30px;
+  width: 90px;
+  margin-left: 77px;
+  margin-top: 7px;
+  text-transform: initial;
+}
+
+/* .searchBar {
+  height: 40px;
+  width: 500px;
+  margin-left: 30px;
+  background-color: white;
+} */
+
+.title {
+  margin-top: 10px;
+  margin-left: 120px;
+}
+
+.titleResetPassword {
+  margin-top: 10px;
+  margin-left: 80px;
+}
+
+#topicons {
+  opacity: 0.5;
+}
+
+#usernamelog {
+  font-size: 12px;
+  margin-top: 17px;
+  margin-left: -30px;
+  font-weight: bold;
+}
+
+#useremaillog {
+  opacity: 0.5;
+  font-size: 12px;
+  margin-top: -14px;
+  margin-left: 10px;
+}
+
+/*----------- Display Notes CSS ----------*/
+#notes-card {
+  width: 100%;
+}
+
+.displaynotes {
+  width: 240px;
+  margin-top: 15px; 
+  float: left;
+  margin-right: 20px;
+  margin-bottom: 20px;
+  /* display: table-row; */
+  flex-direction: row;
+  /* margin-left: 100px; */
+}
+
+/* width: 100%;
+margin-left: 400px; 
+margin-top: 35px;
+opacity: 0.5;
+font-weight: bold;
+font-size: 15px; */
+
+.displaynotes:hover {
+  box-shadow: 0 0 11px rgba(33,33,33,.5); 
+}
+.display-notes-div {
+  margin-left: 400px;
+}
+
+#notebuttons {
+  height: 34px;
+  width: 34px;
+  margin-left: 5px;
+  margin-top: 4px;
+}
+
+#menuitems {
+  font-size: 12px;
+  height: 35px;
+  padding:-10px;
+  margin-top: -20px;
+}
+
+.displaynotes:hover #note-btns {
+  visibility: visible;
+}
+
+#note-btns {
+  visibility: hidden;
+}
+
+#note-menu-btn {
+  font-size: 12px;
+  text-transform: initial;
+  width: 100%;
+  padding-left: 10px;
+}
+
+.change-color-btn:hover #change-color-div {
+  visibility: visible;
+}
+
+#change-color-div {
+  visibility: hidden;
+}
+
+#color-btn {
+  height:26px;
+  width:26px;
+  margin: 3px;
+  border: 1px solid;
+  border-color: gray;
+}
+
+/* .color-change-div {
+  width: 22px;
+  height: 22px;
+  border-radius: 11px;
+} */
+
+/*----------- Reminder CSS ----------*/
+#remindermenu {
+  /* margin-left: 100px; */
+  margin-left: auto;
+  color: rgba(0,0,0,.54);
+}
+
+#reminderdiv {
+  margin-left: 15px;
+  font-size: 15px;
+  margin-top: 12px;
+  margin-bottom: 25px;
+  outline-color: white;
+}
+
+#remindermenuicons {
+  height: 15px;
+  width: 15px;
+  padding-right: 10px;
+}
+
+#avtarremindermenuicons {
+  height: 20px;
+  width: 20px;
+  opacity: 0.5;
+  padding-left: 5px;
+}
+
+/* .reminderdisplay {
+  border-radius: 2px;
+  height: 30px;
+  width: 100px;
+} */
+/* Create two equal columns that floats next to each other */
+/* .column {
+  float: left;
+  width: 18%;
+  padding: 10px;
+} */
+
+/* ----------- Edit Notes CSS ----------
+.updatedialog {
+  height: 163px;
+  width: 600px; 
+  overflow: hidden;
+} */
+
+/* -----------------Create Label Card ----------------- */
+.labelondialog {
+  margin-top: 15px; 
+}
+
+#editlabel {
+  font-weight: bold;
+  font-size: 18px;
+  margin-top: -5px;
+  margin-left: -5px;
+}
+
+#cancellabelbutton {
+  height: 34px;
+  width: 34px;
+  margin-left: -10px;
+}
+#createlabelbutton {
+  height: 34px;
+  width: 34px;
+  margin-left: 4px;
+} 
+
+#deletelabelbtn {
+  width: 29px;
+  height: 26px;
+  margin-left: -5px;
+}
+
+#editlabeldata {
+  margin-left: 10px;
+}
+
+#editlabelbtn {
+  width: 29px;
+  height: 26px;
+  margin-left: -2px;
+}
+
+#deletelabelimg {
+  opacity: 0.5;
+  width: 20px;
+  height: 17px;
+}
+
+#editlabelimg {
+  opacity: 0.5;
+  width: 20px;
+  height: 20px;
+}
+
+/* -----------------Create Label Card ----------------- */
+#label-note {
+  cursor: default;
+  font-size: 14px;
+  /* padding: 0 12px; */
+  padding-top: 5px;
+  padding-left: 12px;
+  outline-color: white;
+  /* height: 36px; */
+}
+
+#label-search {
+  height: 21px;
+  padding-left: 12px;
+  margin-top: 4px;
+  font-size: 13px;
+  margin-bottom: 10px;
+}
+
+#add-label-note{
+  padding-left: 12px;
+  margin-top: -13px;
+}
+
+/* -----------------Search Note CSS----------------- */
+.search-notes-main-div {
+  margin-left: 320px;
+  margin-top: 30px;
+  width: 640px;
+}
+
+#search-note-card {
+  width: 100%;
+  height: 197px;
+  border-radius: 0px;
+}
+
+/* #search-note-card-color{
+  width: 100%;
+  border-radius: 0px;
+  margin-top: 10px;
+  height: 117px;
+} */
+
+#types-div {
+  width: 100%;
+  /* height: 40px; */
+  padding: 10px;
+  font-weight: 500;
+  font-size: 15px;
+}
+
+#search-btn {
+  width: 157px;
+  height: 160px;
+  background-color:dodgerblue;
+  margin-right: 4px;
+  border-radius: 0px;
+  /* margin-bottom: -142px; */
+}
+
+#search-reminder {
+  height: 30px;
+  margin-left: 22px;
+}
+/* #image-div {
+  width: 125px;
+  height: 125px;
+}*/
+
+#reminder-div {
+  /* width: 125px;
+  height: 28px; */
+  color: white;
+  text-transform: initial;
+  font-size: 12px;
+  font-weight: bold;
+  margin-top: 115px;
+  margin-left: -45px;
+}
+
+#search-image {
+  height: 30px;
+  margin-left: 10px;
+}
+
+#image-div {
+  color: white;
+  text-transform: initial;
+  font-size: 12px;
+  font-weight: bold;
+  margin-top: 115px;
+  margin-left: -38px;
+}
+
+#display-success
+{
+  width: 400px;
+  border: 1px solid #D8D8D8;
+  padding: 10px;
+  border-radius: 5px;
+  font-family: Arial;
+  font-size: 15px;
+  /* text-transform: uppercase; */
+  background-color: rgb(236, 255, 216);
+  /* color: green; */
+  text-align: center;
+  margin-top: 10px;
+  margin-left: 460px;
+  margin-bottom: -47px;
+}
+
+#display-login-failed {
+  width: 400px;
+  border: 1px solid #D8D8D8;
+  padding: 10px;
+  border-radius: 5px;
+  font-family: Arial;
+  font-size: 15px;
+  /* text-transform: uppercase; */
+  background-color: rgb(236, 255, 216);
+  /* color: green; */
+  text-align: center;
+  margin-top: 60px;
+  margin-left: 435px;
+  margin-bottom: -100px;
+
+}
