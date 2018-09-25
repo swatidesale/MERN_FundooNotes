@@ -1,4 +1,5 @@
 import axios from 'axios';
+// import $ from 'jquery';
 var dateFormat = require('dateformat');
 
 // Get the elements with class="column"
@@ -8,6 +9,25 @@ var elements = document.getElementsByClassName("column");
 var i;
 
 class NoteController {
+    // reload() {
+    //     // $(document).ready(($) => {
+    //     //     $(document).on('submit', '#submit-form', (event) => {
+    //     //         event.preventDefault();
+    //     //     });
+    //     // });
+
+    //     $.ajax({
+    //         url: "/home/notes",
+    //         context: document.body,
+    //         success: function(s,x) {
+    //             $(this).html(s);
+    //         }
+    //     });
+
+    //     // $(document).ready(function() {
+    //     //     $('#submit-form').delay(1000).load('/home/notes');
+    //     // });
+    // }
 
     notesInGridView() {
         for (i = 0; i < elements.length; i++) {
@@ -22,13 +42,17 @@ class NoteController {
     }
 
     onUpdateNote(key,note) {
+        console.log("Onclik update note");
+        
         // const { notetitle, notedata, ispin, istrash, isarchive } = this.state;
         const ispin  = note.ispin;
         const isarchive = note.isarchive;
         const istrash = note.istrash;
         const background = note.background;
         const reminder = note.reminder;
-        axios.put('/api/notes/notes/'+key, { ispin, isarchive, istrash, background, reminder })
+        const notetitle = note.notetitle;
+        const notedata = note.notedata;
+        axios.put('/api/notes/notes/'+key, { notetitle, notedata, ispin, isarchive, istrash, background, reminder })
         .then((result) => {
             // history.push('/home/notes');
             // this.reload();
@@ -140,6 +164,25 @@ class NoteController {
         this.onUpdateNote(key,note);
 
         // return note;
+    }
+
+    onNoteEdit(title, notedata, key, data) {
+        console.log("onClickEdit");
+        data = {
+            title: title,
+            notedata: notedata
+        }
+        this.onUpdateNote(key, data);
+        // window.location.href = '/home/notes';
+    }
+
+    deleteForever(key, data) {
+        console.log("Inside delete");
+        axios.delete('/api/notes/notes/'+key, { })
+        .then((result) => {
+            // history.push('/home/notes');
+            // this.reload();
+        });    
     }
 }
 

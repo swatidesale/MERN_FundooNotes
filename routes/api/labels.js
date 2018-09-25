@@ -3,15 +3,15 @@ const express = require('express');
 const router = express.Router();
 
 //Note Model
-const Note = require('../../models/Notes');
+const Label = require('../../models/Labels');
 
 // @route GET api/notes
 // @desc GET all notes
 // @access Public
-router.get('/notes', (req,res) => {
-    Note.find()
-        .sort({ notetitle: -1 })
-        .then(note => res.json(note));
+router.get('/labels', (req,res) => {
+    Label.find()
+        .sort({ newlabel: -1 })
+        .then(label => res.json(label));
 });
 
 // router.get('/', function(req, res, next) {
@@ -25,20 +25,15 @@ router.get('/notes', (req,res) => {
 // @route POST api/notes
 // @desc POST a note
 // @access Public
-router.post('/notes', (req,res) => {
-    const newNote = new Note({
-        notetitle: req.body.notetitle,
-        notedata: req.body.notedata,
-        ispin: req.body.ispin,
-        istrash: req.body.istrash,
-        isarchive: req.body.isarchive,
-        background: req.body.background,
-        reminder: req.body.reminder
+router.post('/labels', (req,res) => {
+    const newLabel = new Label({
+        newlabel: req.body.newlabel,
+        userId: req.body.userId
     });
 
     // newNote.save().then(note => res.json(note));
 
-    newNote.save((err) => {
+    newLabel.save((err) => {
         if(err) {
             console.log("Failed",err);
             return res.json({success: false, msg: "Failed"});
@@ -57,23 +52,23 @@ router.post('/notes', (req,res) => {
 //         ).catch(err => res.status(404).json({ success: false }))
 // });
 
-router.delete('/notes/:id', function(req, res, next) {
-    Note.findByIdAndRemove(req.params.id, req.body, function (err, post) {
-      if (err) return next(err);
-      res.json(post);
-    });
-  });
+// router.delete('/notes/:id', function(req, res, next) {
+//     Note.findByIdAndRemove(req.params.id, req.body, function (err, post) {
+//       if (err) return next(err);
+//       res.json(post);
+//     });
+//   });
   
   
 /*----- Update Note ------*/
 // @route PUT api/notes
 // @desc PUT a note
 // @access Public 
-router.put('/notes/:id', (req,res,next) => {
-    Note.findByIdAndUpdate(req.params.id, req.body, function(err, post) {
-        if(err) return next(err);
-        res.json(post);
-    });
-});
+// router.put('/notes/:id', (req,res,next) => {
+//     Note.findByIdAndUpdate(req.params.id, req.body, function(err, post) {
+//         if(err) return next(err);
+//         res.json(post);
+//     });
+// });
 
 module.exports = router;

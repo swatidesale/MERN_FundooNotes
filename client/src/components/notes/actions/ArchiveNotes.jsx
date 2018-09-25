@@ -26,7 +26,6 @@ import undo from '../../../assets/icons/undo.svg';
 import remindme from '../../../assets/icons/reminder.svg';
 import redo from '../../../assets/icons/redo.svg';
 import axios from 'axios';
-import $ from 'jquery';
 import NoteController from '../../../controllers/NoteController.js';
 // import { createBrowserHistory } from 'history';
 
@@ -103,7 +102,7 @@ class ArchiveNotes extends Component {
     }
 
     componentDidMount() {
-        axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');
+        // axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');
         axios.get('/api/notes/notes')
           .then(res => {
             this.setState({ notes: res.data });
@@ -115,41 +114,6 @@ class ArchiveNotes extends Component {
         //   });
 
     }
-
-    reload() {
-        // $(document).ready(($) => {
-        //     $(document).on('submit', '#submit-form', (event) => {
-        //         event.preventDefault();
-        //     });
-        // });
-
-        $.ajax({
-            url: "/home/notes",
-            context: document.body,
-            success: function(s,x) {
-                $(this).html(s);
-            }
-        });
-
-        // $(document).ready(function() {
-        //     $('#submit-form').delay(1000).load('/home/notes');
-        // });
-    }
-
-    // onClickEdit(title, notedata, key, data) {
-    //     console.log("onClickEdit");
-    //     if (title !== null || notedata !== null) {
-    //         data = {
-    //             title: title,
-    //             notedata: notedata
-    //         }
-    //         noteCtrl.updateNote(key, data);
-    //         window.location.href = '/home/archive';
-    //     }
-    //     else {
-    //         alert("Enter data to update");
-    //     }
-    // }
 
     getLabel(key, data, labelName) {
         // labelCtrl.getLabelData(key, data, labelName);
@@ -388,15 +352,17 @@ class ArchiveNotes extends Component {
                                 >
                                     <DialogTitle id="alert-dialog-title">
                                         <Input style={{ width: 500, height: 43 }}
+                                            id="edittitle"
                                             className="addnotetitleinput"
                                             disableUnderline={true}
                                             type="text"
                                             defaultValue={note.notetitle}
-                                            onInput={e => this.setState({ notetitle: e.target.value })}
+                                            onInput={e => this.setState({ title: e.target.value })}
                                         />
                                     </DialogTitle>
                                     <DialogContent>
                                         <Input
+                                            id="editnotedata"
                                             className="addnotetitleinput"
                                             disableUnderline={true}
                                             type="text"
@@ -406,23 +372,23 @@ class ArchiveNotes extends Component {
                                     </DialogContent>
                                     <DialogActions>
                                         <div style={{ width: 600, height: 40, marginTop: -12 }}>
-                                            <IconButton color="primary" >
+                                            <IconButton color="primary" id="notebuttons">
                                                 <img src={remindme} alt="remindme" id="noteicons" />
                                             </IconButton>
-                                            <IconButton color="primary" >
+                                            <IconButton color="primary" id="notebuttons">
                                                 <img src={collaborator} alt="collaborator" id="noteicons" />
                                             </IconButton>
 
-                                            <IconButton color="primary" >
+                                            <IconButton color="primary" id="notebuttons">
                                                 <img src={changecolor} alt="changecolor" id="noteicons" />
                                             </IconButton>
 
-                                            <IconButton color="primary" >
+                                            <IconButton color="primary" id="notebuttons">
                                                 <img src={newnotewithimage} alt="newnotewithimage" id="noteicons" />
                                             </IconButton>
 
-                                            <IconButton color="primary" >
-                                                <img src={unarchive} alt="unarchive" id="noteicons" />
+                                            <IconButton color="primary" id="notebuttons">
+                                                <img src={unarchive} alt="archive" id="noteicons" />
                                             </IconButton>
 
                                             <IconButton color="primary" id="notebuttons"
@@ -443,14 +409,14 @@ class ArchiveNotes extends Component {
                                                 <MenuItem>Add label</MenuItem>
                                             </Menu>
 
-                                            <IconButton color="primary" >
+                                            <IconButton color="primary" id="notebuttons">
                                                 <img src={undo} alt="undo" id="noteicons" />
                                             </IconButton>
-                                            <IconButton color="primary" >
+                                            <IconButton color="primary" id="notebuttons">
                                                 <img src={redo} alt="redo" id="noteicons" />
                                             </IconButton>
 
-                                            <Button id="closebutton" onClick={() => this.onClickEdit(this.state.notetitle, this.state.notedata, note._id, note)}>Close</Button>
+                                            <Button id="closebutton" onClick={() => {noteCtrl.onNoteEdit(this.state.notetitle, this.state.notedata, note._id, note);this.handleClickClose()}}>Close</Button>
                                         </div>
                                     </DialogActions>
                                 </Dialog>

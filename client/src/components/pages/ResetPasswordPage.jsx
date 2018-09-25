@@ -16,7 +16,9 @@ class ResetPasswordPage extends Component {
             user: {
                 username:'',
                 password:'',
-                confirmPassword:''
+                confirmPassword:'',
+                message: '',
+                status: false
             }
         }
 
@@ -32,21 +34,33 @@ class ResetPasswordPage extends Component {
 
     handleSubmit(event) {
         event.preventDefault();
-
+        var token = localStorage.getItem('resetToken');
         const { password } = this.state;
-        axios.post('/api/users/reset',{password})
+        axios.post('/api/users/reset/'+token ,{password})
             .then((result) => {
+                this.setState({ message: result.data.msg });
+                this.setState({status: true });
                 history.push("/login");
         })
         .catch((error) => {
-            console.log("Inside catch ");
+            this.setState({ message: 'Password reset token is invalid or has expired.' });
+            this.setState({status: true });
             console.log(error);
         }) 
     }
     
     render() {
+        const { message } = this.state;
         return(
             <div>
+                <form onSubmit={this.handleSubmit}>
+                {this.state.status ?
+                    <div id="display-login-failed">
+                        { message }
+                    </div>
+                    : 
+                    null
+                }
                 <Card className="card">
                     <header>
                         <div className="titleResetPassword">
@@ -55,8 +69,7 @@ class ResetPasswordPage extends Component {
                     </header>
 
                     <div className="container">
-                        <form onSubmit={this.handleSubmit}>
-                            <CardContent>
+                    <CardContent>
                                 {/* <TextField
                                     id="username"
                                     label="Email Id"
@@ -67,26 +80,27 @@ class ResetPasswordPage extends Component {
                                 <br/> */}
 
                                 <TextField
+                                    style={{width:200}}
                                     id="password"
                                     label="New Password"
                                     type="password"
                                     margin="normal"
-                                    // required
+                                    required
                                     onChange={this.handleChange} value={this.state.password}
                                 />
                                 <br/>
 
                                 <TextField
+                                    style={{width:200}}
                                     id="confirmPassword"
                                     label="Confirm Password"
                                     type="password"
                                     margin="normal"
-                                    // required
+                                    required
                                     onChange={this.handleChange} value={this.state.confirmPassword}
                                 />
                                 <br/>
                             </CardContent>
-                        </form>
                     </div>
                     <CardActions className="resetPasswordCardAction">
                         <Button className="resetPasswordBtn" color="primary" variant="contained" onClick={this.handleSubmit}>
@@ -94,6 +108,7 @@ class ResetPasswordPage extends Component {
                         </Button>
                     </CardActions>
                 </Card>
+                </form>
             </div>
         );
     }

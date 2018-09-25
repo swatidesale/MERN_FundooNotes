@@ -4,6 +4,8 @@ const bodyParser = require('body-parser');
 
 const users = require('./routes/api/users');
 const notes = require('./routes/api/notes');
+const labels = require('./routes/api/labels');
+
 const app = express();
 
 //BodyParser Middleware
@@ -20,6 +22,7 @@ mongoose.connect(db,{ useNewUrlParser: true })
 //Use Routes
 app.use('/api/users',users);
 app.use('/api/notes',notes);
+app.use('/api/labels',labels);
 
 const port = process.env.PORT || 2000;
 

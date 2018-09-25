@@ -39,13 +39,14 @@ class LoginPage extends Component {
     const { username, password } = this.state;
     axios.post('/api/users/login', { username, password })
       .then((result) => {
-        localStorage.setItem('jwtToken', result.data.token);
         localStorage.setItem('username',result.data.user.username);
         var user = result.data.user.firstname+" "+result.data.user.lastname;
         localStorage.setItem('user',user);
+        localStorage.setItem('userKey',result.data.user._id);
+        console.log("Login..............",result.data.user._id);
         this.setState({ message: '' });
         this.setState({status: false });
-        history.push('/home/notes');
+        window.location.href='/home/notes';
       })
       .catch((error) => {
         if(error.response.status === 401) {
@@ -71,6 +72,7 @@ class LoginPage extends Component {
           else {
             this.setState({ message: result.data.msg });
             this.setState({status: true});
+            localStorage.setItem('resetToken',result.data.token);
             history.push("/login");
           }
     })
@@ -101,10 +103,11 @@ class LoginPage extends Component {
               <h1>Login</h1>
             </div>
           </header>
-
+        
           <div className="container">
               <CardContent>
                 <TextField
+                  style={{width:200}}
                   id="username"
                   label="Username"
                   type="text"
@@ -115,6 +118,7 @@ class LoginPage extends Component {
                 <br />
 
                 <TextField
+                  style={{width:200}}
                   id="password"
                   label="Password"
                   type="password"
@@ -125,7 +129,7 @@ class LoginPage extends Component {
                 <br />
               </CardContent>
 
-              <CardActions className="cardAction">
+              <CardActions className="logincardAction">
                 <Button className="actions" onClick={this.handleSubmit} variant="contained" color="primary">
                   Login
                 </Button>

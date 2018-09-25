@@ -51,7 +51,7 @@ class RegisterPage extends Component {
             else {
                 this.setState({ message: '' });
                 this.setState({status: false});
-                history.push("/login")
+                window.location.href='/login';
             }
       });
     }
@@ -78,6 +78,7 @@ class RegisterPage extends Component {
                         <div className="containerRegister">
                             <CardContent>
                                 <TextField
+                                    style={{width:220}}
                                     name="firstname"
                                     id="firstname"
                                     label="First Name"
@@ -89,6 +90,7 @@ class RegisterPage extends Component {
                                 <br/>
 
                                 <TextField
+                                    style={{width:220}}
                                     name="lastname"
                                     id="lastname"
                                     label="Last Name"
@@ -100,6 +102,7 @@ class RegisterPage extends Component {
                                 <br/>
 
                                 <TextField
+                                    style={{width:220}}
                                     name="username"
                                     id="username"
                                     label="Username"
@@ -111,6 +114,7 @@ class RegisterPage extends Component {
                                 <br/>
 
                                 <TextField
+                                    style={{width:220}}
                                     name="password"
                                     id="password"
                                     label="Password"
@@ -122,6 +126,7 @@ class RegisterPage extends Component {
                                 <br/>
 
                                 <TextField
+                                    style={{width:220}}
                                     name="confirmPassword"
                                     id="confirmPassword"
                                     label="Confirm Password"

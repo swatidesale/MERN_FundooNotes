@@ -26,7 +26,6 @@ import undo from '../../../assets/icons/undo.svg';
 import remindme from '../../../assets/icons/reminder.svg';
 import redo from '../../../assets/icons/redo.svg';
 import axios from 'axios';
-import $ from 'jquery';
 import NoteController from '../../../controllers/NoteController.js';
 // import { createBrowserHistory } from 'history';
 
@@ -121,57 +120,27 @@ class OtherNote extends Component {
         // labelCtrl.removeLabel(key, data);
     }
 
-    // onClickEdit(title, notedata, key, data) {
-    //     console.log("onClickEdit");
-    //     if (title !== null || notedata !== null) {
-    //         data = {
-    //             title: title,
-    //             notedata: notedata
-    //         }
-    //         noteCtrl.updateNote(key, data);
-    //         window.location.href = '/home/notes';
-    //     }
-    //     else {
-    //         alert("Enter data to update");
-    //     }
-    // }
-
     getLabel(key, data, labelName) {
         // labelCtrl.getLabelData(key, data, labelName);
     }
 
     triggerInputFile() {
+        console.log("Inside trigger");
         this.fileInput.click();
     }
     
-    // handleImageChange = (event, key) => {
-    //     var image = '';
-    //     console.log("Inside " + event.target.files[0]);
-
-    //     if (event.target.files[0]) {
-    //         image = event.target.files[0].name;
-    //     }
-    //     noteCtrl.handleUploadImage(image, key);
-    // }
-
-    reload() {
-        // $(document).ready(($) => {
-        //     $(document).on('submit', '#submit-form', (event) => {
-        //         event.preventDefault();
-        //     });
-        // });
-
-        $.ajax({
-            url: "/home/notes",
-            context: document.body,
-            success: function(s,x) {
-                $(this).html(s);
-            }
-        });
-
-        // $(document).ready(function() {
-        //     $('#submit-form').delay(1000).load('/home/notes');
-        // });
+    handleImageChange = (event) => {
+        var image = '';
+        console.log("Inside handleImageChange : " + event.target);
+        console.log("File name :",event.target.files[0].fileName);
+        console.log("File path :",event.target.files[0].filePath);
+        
+        if (event.target.files[0]) {
+            image = event.target.files[0].name;
+        }
+        console.log("Image name :",image);
+        
+        // noteCtrl.handleUploadImage(image, key);
     }
 
     render() {
@@ -367,12 +336,12 @@ class OtherNote extends Component {
                                         <input style={{ display: 'none' }}
                                             type="file"
                                             ref={fileInput => this.fileInput = fileInput}
-                                            // onChange={(event) => {this.handleImageChange(event)}} 
-                                            // onChange={((e) => this.handleImageChange(e, key))}
+                                            onChange={(event) => {this.handleImageChange(event)}} 
+                                            // onChange={((e) => this.handleImageChange(e, note._id))}
                                         >
                                         </input>
                                         <Tooltip title="Add image">
-                                            <IconButton type="submit" color="primary" id="notebuttons" onClick={this.triggerInputFile}>
+                                            <IconButton color="primary" id="notebuttons" onClick={this.triggerInputFile}>
                                                 <img src={newnotewithimage} alt="newnotewithimage" id="noteicons" />
                                             </IconButton>
                                         </Tooltip>
@@ -431,7 +400,7 @@ class OtherNote extends Component {
                                             disableUnderline={true}
                                             type="text"
                                             defaultValue={note.notetitle}
-                                            onInput={e => this.setState({ title: e.target.value })}
+                                            onInput={e => this.setState({ notetitle: e.target.value })}
                                         />
                                     </DialogTitle>
                                     <DialogContent>
@@ -446,22 +415,22 @@ class OtherNote extends Component {
                                     </DialogContent>
                                     <DialogActions>
                                         <div style={{ width: 600, height: 40, marginTop: -12 }}>
-                                            <IconButton color="primary" >
+                                            <IconButton color="primary" id="notebuttons">
                                                 <img src={remindme} alt="remindme" id="noteicons" />
                                             </IconButton>
-                                            <IconButton color="primary" >
+                                            <IconButton color="primary" id="notebuttons">
                                                 <img src={collaborator} alt="collaborator" id="noteicons" />
                                             </IconButton>
 
-                                            <IconButton color="primary" >
+                                            <IconButton color="primary" id="notebuttons">
                                                 <img src={changecolor} alt="changecolor" id="noteicons" />
                                             </IconButton>
 
-                                            <IconButton color="primary" >
+                                            <IconButton color="primary" id="notebuttons">
                                                 <img src={newnotewithimage} alt="newnotewithimage" id="noteicons" />
                                             </IconButton>
 
-                                            <IconButton color="primary" >
+                                            <IconButton color="primary" id="notebuttons">
                                                 <img src={archive} alt="archive" id="noteicons" />
                                             </IconButton>
 
@@ -483,14 +452,14 @@ class OtherNote extends Component {
                                                 <MenuItem>Add label</MenuItem>
                                             </Menu>
 
-                                            <IconButton color="primary" >
+                                            <IconButton color="primary" id="notebuttons">
                                                 <img src={undo} alt="undo" id="noteicons" />
                                             </IconButton>
-                                            <IconButton color="primary" >
+                                            <IconButton color="primary" id="notebuttons">
                                                 <img src={redo} alt="redo" id="noteicons" />
                                             </IconButton>
 
-                                            <Button id="closebutton" >Close</Button>
+                                            <Button id="closebutton" onClick={() => {noteCtrl.onNoteEdit(this.state.notetitle, this.state.notedata, note._id, note);this.handleClickClose()}}>Close</Button>
                                         </div>
                                     </DialogActions>
                                 </Dialog>

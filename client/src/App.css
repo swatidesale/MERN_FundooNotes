@@ -69,12 +69,16 @@
 }
 
 .cardAction {
-  margin-left: 10px;
+  margin-left: 23px;
+}
+
+.logincardAction {
+  margin-left: 13px;
 }
 
 .containerRegister {
   margin-top: -40px;
-  margin-left: 75px;
+  margin-left: 65px;
 }
 
 #closebutton {
@@ -105,7 +109,7 @@
 }
 
 .forgotPwd {
-  margin-left: 25px;
+  margin-left: 30px;
 }
 
 .forgotPwdBtn {
@@ -173,11 +177,12 @@
 
 .resetPasswordCardAction {
   margin-top: -10px;
-  margin-left: 60px;
+  margin-left: 65px;
 }
+
 .resetPasswordBtn {
-  margin-left: 50px;
-  width: 190px;
+  /* margin-left: 60px; */
+  width: 200px;
   height: 25px;
 }
 
@@ -375,6 +380,7 @@ font-size: 15px; */
   width: 600px; 
   overflow: hidden;
 } */
+
 
 /* -----------------Create Label Card ----------------- */
 .labelondialog {

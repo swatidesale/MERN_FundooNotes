@@ -6,7 +6,9 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import more from '../../../assets/icons/more.svg';
 import axios from 'axios';
-import $ from 'jquery';
+import NoteController from '../../../controllers/NoteController';;
+
+const noteCtrl = new NoteController();
 
 class TrashNotes extends Component {
     constructor() {
@@ -28,7 +30,7 @@ class TrashNotes extends Component {
     };
 
     componentDidMount() {
-        axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');
+        // axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');
         axios.get('/api/notes/notes')
           .then(res => {
             this.setState({ notes: res.data });
@@ -39,78 +41,6 @@ class TrashNotes extends Component {
         //     }
         //   });
 
-    }
-    
-    isPinNote(key, data) {
-        if( data.ispin === true) {
-            data.ispin = false;
-        }
-        else {
-            data.ispin = true;
-        }
-        this.onUpdateNote(key,data);
-    }
-
-    isArchiveNote(key, data) {
-        if( data.isarchive === true) {
-            data.isarchive = false;
-        }
-        else {
-            data.isarchive = true;
-        }
-        this.onUpdateNote(key,data);
-    }
-
-    isTrashNote(key, data) {
-        if( data.istrash === true) {
-            data.istrash = false;
-        }
-        else {
-            data.istrash = true;
-        }
-        this.onUpdateNote(key,data);
-    }
-
-    onUpdateNote(key,note) {
-        // const { notetitle, notedata, ispin, istrash, isarchive } = this.state;
-        const ispin  = note.ispin;
-        const isarchive = note.isarchive;
-        const istrash = note.istrash;
-        axios.put('/api/notes/notes/'+key, { ispin, isarchive, istrash })
-        .then((result) => {
-            // history.push('/home/notes');
-            this.reload();
-        });
-    }
-
-
-    reload() {
-        // $(document).ready(($) => {
-        //     $(document).on('submit', '#submit-form', (event) => {
-        //         event.preventDefault();
-        //     });
-        // });
-
-        $.ajax({
-            url: "/home/trash",
-            context: document.body,
-            success: function(s,x) {
-                $(this).html(s);
-            }
-        });
-
-        // $(document).ready(function() {
-        //     $('#submit-form').delay(1000).load('/home/notes');
-        // });
-    }
-
-    deleteForever(key, data) {
-        console.log("Inside delete");
-        axios.delete('/api/notes/notes/'+key, { })
-        .then((result) => {
-            // history.push('/home/notes');
-            this.reload();
-        });    
     }
 
     handleDeleteLabel(key, data) {
@@ -164,8 +94,8 @@ class TrashNotes extends Component {
                                             open={Boolean(anchorEl)}
                                             onClose={this.handleClose}
                                         >
-                                            <MenuItem type="submit" id="menuitems" onClick={() => { this.handleClose(); this.deleteForever(note._id, note) }}>Delete forever</MenuItem>
-                                            <MenuItem id="menuitems" onClick={() => { this.handleClose(); this.isTrashNote(note._id, note) }}>Restore</MenuItem>
+                                            <MenuItem type="submit" id="menuitems" onClick={() => { this.handleClose(); noteCtrl.deleteForever(note._id, note) }}>Delete forever</MenuItem>
+                                            <MenuItem id="menuitems" onClick={() => { this.handleClose(); noteCtrl.isTrashNote(note._id, note) }}>Restore</MenuItem>
                                         </Menu>
                                     </div>
                                 </Card>

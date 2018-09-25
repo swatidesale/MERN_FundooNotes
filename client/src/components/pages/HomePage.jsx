@@ -38,7 +38,10 @@ import TrashNotes from '../notes/actions/TrashNotes';
 // import SearchNotes from '../notes/actions/SearchNotes';
 // import DisplayLabelsOnDialog from '../notes/actions/DisplayLabelOnDialog.jsx';
 import NoteController from '../../controllers/NoteController';
+import axios from 'axios';
+import { createBrowserHistory } from 'history';
 
+const history = createBrowserHistory();
 const noteCtrl = new NoteController();
 
 class HomePage extends Component {
@@ -156,7 +159,21 @@ class HomePage extends Component {
 
     createLabel() {
         console.log("Inside create Label");
-        // labelCtrl.createLabel(this.state.newlabel);
+        const userId = localStorage.getItem('userKey');
+        const { newlabel } = this.state;
+        console.log(newlabel);
+        
+        axios.post('/api/labels/labels', { userId, newlabel })
+            .then((result) => {
+                console.log("Result :",result);
+                if(result.data.success === false) {
+                    console.log("Inside if");
+                }
+                else {
+                    console.log("Inside else");
+                    history.push("/home/notes");
+                }
+            });
     }
 
     refreshPage() {

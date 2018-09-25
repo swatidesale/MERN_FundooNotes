@@ -18,7 +18,6 @@ import undo from '../../assets/icons/undo.svg';
 import remindme from '../../assets/icons/reminder.svg';
 import redo from '../../assets/icons/redo.svg';
 import axios from 'axios';
-import $ from 'jquery';
 import { createBrowserHistory } from 'history';
 
 const history = createBrowserHistory();
@@ -73,26 +72,6 @@ class Note extends Component {
             title: '',
             notedata: ''
         });
-    }
-
-    reload() {
-        // $(document).ready(($) => {
-        //     $(document).on('submit', '#submit-form', (event) => {
-        //         event.preventDefault();
-        //     });
-        // });
-
-        $.ajax({
-            url: "/home/notes",
-            context: document.body,
-            success: function(s,x) {
-                $(this).html(s);
-            }
-        });
-
-        // $(document).ready(function() {
-        //     $('#submit-form').delay(1000).load('/home/notes');
-        // });
     }
 
     render() {

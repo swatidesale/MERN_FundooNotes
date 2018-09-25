@@ -1,50 +1,5 @@
-// const express = require('express');
-
-// const router = express.Router();
-
-// //User Model
-// const User = require('../../models/Users');
-
-// // @route GET api/users
-// // @desc GET all users
-// // @access Public
-// router.get('/', (req,res) => {
-//     User.find()
-//         .sort({ firstname: -1 })
-//         .then(users => res.json(users))
-// });
-
-/*----- Save User -----*/
-// @route POST api/users
-// @desc POST a users
-// @access Public
-// router.post('/',(req,res) => {
-//     const newUser = new User({
-//         firstname: req.body.firstname,
-//         lastname: req.body.lastname,
-//         username: req.body.username,
-//         password: req.body.password
-//     });
-
-//     newUser.save().then(user => res.json(user));
-// });
-
-// /*----- Delete User ------*/
-// // @route DELETE api/users
-// // @desc DELETE a user
-// // @access Public
-// router.delete('/:id',(req,res) => {
-//     User.findById(req.params.id)
-//         .then(user => user.remove().then(() => res.json({success: true}))
-//     ).catch(err => res.status(404).json({success: false}))
-// });
-
-// module.exports = router;
-
-var mongoose = require('mongoose');
-var passport = require('passport');
 var settings = require('../../config/settings');
-require('../../config/passport');
+// require('../../config/passport');
 var express = require('express');
 var jwt = require('jsonwebtoken');
 var router = express.Router();
@@ -151,13 +106,13 @@ router.post('/forgot', (req,res,next) => {
                 text: 'You are receiving this because you (or someone else) have requested the reset' + 
                 ' password for your account.\n\n Please click on following link, or paste this into your' +
                 ' browser to complete the proccess.\n\n' +
-                'http://' + req.headers.host + '/reset/' + token + '\n\n' + 
-                // 'http://localhost:3000/resetPassword' +
+                // 'http://' + req.headers.host + '/api/users/reset/' + token + '\n\n' + 
+                'http://localhost:3000/resetPassword/' + user._id + token + '\n\n' +
                 ' if you did not requested this, please ignore this email and your password will remain unchanged.\n' 
             };
             smtpTransport.sendMail(mailOptions, function(err) {
                 // res.redirect('/reset');
-                res.json({success: true, msg: 'An e-mail has been sent'});
+                res.json({success: true, msg: 'An e-mail has been sent',token: token});
                 done(err, 'done');
             });
         }
@@ -169,13 +124,11 @@ router.post('/forgot', (req,res,next) => {
 });
 
 router.get('/reset/:token', (req,res) => {
-    console.log("Inside get rest token");
     User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $get: Date.now()}}, function(err, username) {
         if(!username) {
-            res.status(401).send({success: false, msg:'Password reset token is invalid or has expired.'});
+            res.status(401).send({success: false, msg:'Password reset token is invalid.'});
         }
         else {
-            console.log("Inside else",req.username);
             res.render('reset', {
                 user: req.username
             });
@@ -195,8 +148,8 @@ router.post('/reset/:token', function(req, res) {
     
             user.password = req.body.password;
             user.resetPasswordToken = undefined;
-            user.resetPasswordExpires = undefined;
-    
+            user.resetPasswordExpires = undefined; 
+
             user.save(function(err) {
                 // req.logIn(user, function(err) {
                     done(err, user);
