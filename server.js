@@ -5,7 +5,6 @@ const bodyParser = require('body-parser');
 const users = require('./routes/api/users');
 const notes = require('./routes/api/notes');
 const labels = require('./routes/api/labels');
-
 const app = express();
 
 //BodyParser Middleware
@@ -24,7 +23,7 @@ app.use('/api/users',users);
 app.use('/api/notes',notes);
 app.use('/api/labels',labels);
 
-const port = process.env.PORT || 2000;
+const port = process.env.PORT || 5000;
 
 app.listen(port, () => console.log(`Server Started on port ${port}`));
 

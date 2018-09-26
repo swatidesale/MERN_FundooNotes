@@ -14,7 +14,7 @@ const UserSchema = new Schema({
     },
     username: {
         type: String,
-        // unique: true,
+        unique: true,
         lowercase: true,
         trim: true,
         required: true
@@ -34,8 +34,10 @@ const UserSchema = new Schema({
     }
 });
 
+
 UserSchema.pre('save', function(next) {
     var user = this;
+      // Check if document is new or a new password has been set
     if(this.isModified('password') || this.isNew) {
         bcrypt.genSalt(10, function(err,salt) {
             if(err) {

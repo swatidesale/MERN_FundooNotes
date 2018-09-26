@@ -33,10 +33,9 @@ import createlabeldone from '../../assets/icons/createlabeldone.svg';
 import Note from '../notes/Note';
 import ArchiveNotes from '../notes/actions/ArchiveNotes';
 import TrashNotes from '../notes/actions/TrashNotes';
-// import ReminderNotes from '../notes/actions/ReminderNotes';
-// import DisplayLabels from '../notes/actions/DisplayLabels';
-// import SearchNotes from '../notes/actions/SearchNotes';
-// import DisplayLabelsOnDialog from '../notes/actions/DisplayLabelOnDialog.jsx';
+import ReminderNotes from '../notes/actions/ReminderNotes';
+import DisplayLabels from '../notes/actions/DisplayLabels';
+import DisplayLabelsOnDialog from '../notes/actions/DisplayLabelsOnDialog';
 import NoteController from '../../controllers/NoteController';
 import axios from 'axios';
 import { createBrowserHistory } from 'history';
@@ -158,19 +157,14 @@ class HomePage extends Component {
     };
 
     createLabel() {
-        console.log("Inside create Label");
-        const userId = localStorage.getItem('userKey');
         const { newlabel } = this.state;
-        console.log(newlabel);
-        
+        const userId = localStorage.getItem('userKey');
         axios.post('/api/labels/labels', { userId, newlabel })
             .then((result) => {
-                console.log("Result :",result);
                 if(result.data.success === false) {
                     console.log("Inside if");
                 }
                 else {
-                    console.log("Inside else");
                     history.push("/home/notes");
                 }
             });
@@ -280,7 +274,7 @@ class HomePage extends Component {
                             <span style={{ marginLeft: 15, fontSize: 14 }}>Labels</span>
                             <Button id="editbutton" onClick={this.handleClickOpen}>Edit</Button>
 
-                            {/* <DisplayLabels /> */}
+                            <DisplayLabels />
                             <Button id="drawerbuttons" color="inherit" onClick={this.handleClickOpen} >
                                 <img src={createnewlabel} alt="createnewlabel" id="imagecreatelabel" />Create New Label
                             </Button>
@@ -299,19 +293,14 @@ class HomePage extends Component {
 
                 {window.location.pathname === '/home/notes' && <Note />}
                 {window.location.pathname === '/home/archive' && 
-                    // <div className="archive-note-count">Archive Notes {localStorage.getItem("archiveNotesCount")}
                     <ArchiveNotes />
-                    // </div>
                 }
 
                 {window.location.pathname === '/home/trash' && 
-                    // <div className="archive-note-count">Trash Notes {localStorage.getItem("trashNotesCount")}
                     <TrashNotes />
-                    // </div>
                 }
 
-                {/* {window.location.pathname === '/home/reminder' && <ReminderNotes />} */}
-                {/* {window.location.pathname === '/home/search' && <SearchNotes/>} */}
+                {window.location.pathname === '/home/reminder' && <ReminderNotes />}
                 
                 {/* ----------------- Signout Card ----------------- */}
                 <div className="appsignout">
@@ -367,7 +356,7 @@ class HomePage extends Component {
                             </Typography>
                         </DialogTitle>
                         <DialogContent style={{ marginTop: -20 }}>
-                            <IconButton color="primary" id="cancellabelbutton">
+                            <IconButton color="primary" id="cancellabelbutton" onClick={this.handleClickClose}>
                                 <img src={cancel} alt="cancel" id="noteicons" />
                             </IconButton>
                             <Input
@@ -381,7 +370,7 @@ class HomePage extends Component {
                                 <img src={createlabeldone} alt="createlabeldone" id="noteicons" />
                             </IconButton>
                             
-                            {/* <DisplayLabelsOnDialog /> */}
+                            <DisplayLabelsOnDialog />
 
                         </DialogContent>
                         <Divider />

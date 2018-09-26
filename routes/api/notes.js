@@ -2,6 +2,9 @@ const express = require('express');
 
 const router = express.Router();
 
+// var passport = require('passport');
+// require('../../config/passport')(passport);
+
 //Note Model
 const Note = require('../../models/Notes');
 
@@ -14,12 +17,18 @@ router.get('/notes', (req,res) => {
         .then(note => res.json(note));
 });
 
-// router.get('/', function(req, res, next) {
-//     Book.find(function (err, products) {
-//       if (err) return next(err);
-//       res.json(products);
-//     });
-//   });
+// router.get('/notes',passport.authenticate('jwt', { session: false }), function(req, res) {
+//     var token = getToken(req.headers);
+//     if(token) {
+//         Note.find(function(err, notes) {
+//             if(err) return next(err);
+//             res.json(notes);
+//         });
+//     }
+//     else {
+//         return res.status(403).send({success: false, msg: 'Unauthorised'});
+//     }
+// });
 
 /*----- Save Note -----*/
 // @route POST api/notes
@@ -27,6 +36,7 @@ router.get('/notes', (req,res) => {
 // @access Public
 router.post('/notes', (req,res) => {
     const newNote = new Note({
+        userId: req.body.userId,
         notetitle: req.body.notetitle,
         notedata: req.body.notedata,
         ispin: req.body.ispin,
@@ -47,16 +57,23 @@ router.post('/notes', (req,res) => {
     });
 });
 
+// router.post('/notes', passport.authenticate('jwt', {session: false}),function(req, res) {
+//     var token = getToken(req.headers);
+//     if(token) {
+//         Note.create(req.body, function(err, post) {
+//             if(err) return next(err);
+//             res.json(post);
+//         });
+//     }
+//     else {
+//         return res.status(403).send({ success: false, msg: 'Unauthorized.'});
+//     }
+// });
+
 /*----- Delete Note ------*/
 // @route DELETE api/users
 // @desc DELETE a user
 // @access Public
-// router.delete('/notes/:id', (req,res) => {
-//     Note.findById(req.params.id)
-//         .then(user => user.remove().then(() => res.json({ success: true }))
-//         ).catch(err => res.status(404).json({ success: false }))
-// });
-
 router.delete('/notes/:id', function(req, res, next) {
     Note.findByIdAndRemove(req.params.id, req.body, function (err, post) {
       if (err) return next(err);
@@ -75,5 +92,21 @@ router.put('/notes/:id', (req,res,next) => {
         res.json(post);
     });
 });
+
+// getToken = function(headers) {
+//     if(headers && headers.authorization) {
+//         var parted = head
+//         .authorization.split(' ');
+//         if(parted.length === 2) {
+//             return parted[1];
+//         }
+//         else {
+//             return null;
+//         }
+//     }
+//     else {
+//         return null;
+//     }
+// };
 
 module.exports = router;

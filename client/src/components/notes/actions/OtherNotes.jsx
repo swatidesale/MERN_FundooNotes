@@ -4,12 +4,12 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { Input, Button } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
-// import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Chip from '@material-ui/core/Chip';
-// import Checkbox from '@material-ui/core/Checkbox';
+import Checkbox from '@material-ui/core/Checkbox';
 import Tooltip from '@material-ui/core/Tooltip';
-// import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
-// import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -72,6 +72,15 @@ class OtherNote extends Component {
         //     }
         //   });
 
+        axios.get('/api/labels/labels')
+        .then(res => {
+              this.setState({ labels: res.data });   
+        })
+        //   .catch((error) => {
+        //     if(error.response.status === 401) {
+        //       this.props.history.push("/login");
+        //     }
+        //   });
     }
     
     handleClickColor(event) {
@@ -116,14 +125,6 @@ class OtherNote extends Component {
         this.setState({ open: false });
     };
 
-    handleDeleteLabel(key, data) {
-        // labelCtrl.removeLabel(key, data);
-    }
-
-    getLabel(key, data, labelName) {
-        // labelCtrl.getLabelData(key, data, labelName);
-    }
-
     triggerInputFile() {
         console.log("Inside trigger");
         this.fileInput.click();
@@ -140,22 +141,17 @@ class OtherNote extends Component {
         }
         console.log("Image name :",image);
         
-        // noteCtrl.handleUploadImage(image, key);
     }
 
     render() {
+        const userId = localStorage.getItem('userKey');
         const { anchorEl } = this.state;
         const { anchorElRemind } = this.state;
         const { anchorElAddLabel } = this.state;
         const { anchorElColor } = this.state;
-        // var otherNotesCount = [];
         return (
             this.state.notes.map((note) => {
-                if(note.ispin === false && note.isarchive === false && note.istrash === false) {
-                // if (data.isPin === false && data.isArchive === false && data.isTrash === false) {
-                    // otherNotesCount.push(data);
-                    // console.log(otherNotesCount.length);
-                    // localStorage.setItem("otherNotesCount", otherNotesCount.length);
+                if(note.ispin === false && note.isarchive === false && note.istrash === false && userId === note.userId) {
                     return (
                         <form>
                             <div id="submit" className="display-notes-div">
@@ -192,7 +188,6 @@ class OtherNote extends Component {
                                                 <img src={pickdate} alt="pickdate" id="avtarremindermenuicons" />
                                             }
                                             label={note.reminder}
-                                            // onClick={handleClick}
                                             onDelete={() => noteCtrl.handleDeleteReminder(note._id, note)}
                                             style={{ borderRadius: 1, height: 24, marginLeft: 10, fontSize: 11 }}
                                         />
@@ -228,10 +223,7 @@ class OtherNote extends Component {
                                             onClose={this.handleCloseReminder}
                                         >
                                             <div id="reminderdiv" >Reminder : </div>
-                                            {/* <MenuItem id="menuitems" onClick={() => { this.handleCloseReminder()}}>Later Today<div id="remindermenu">8:00 PM</div></MenuItem>
-                                            <MenuItem id="menuitems" onClick={() => { this.handleCloseReminder()}}>Tomorrow<div id="remindermenu">8:00 AM</div></MenuItem>
-                                            <MenuItem id="menuitems" onClick={() => { this.handleCloseReminder()}}>Next Week<div id="remindermenu">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Mon, 8:00 AM</div></MenuItem> */}
-                                             <MenuItem id="menuitems" onClick={() => { this.handleCloseReminder(); noteCtrl.getToday(note._id, note) }}>Later Today<div id="remindermenu">8:00 PM</div></MenuItem>
+                                            <MenuItem id="menuitems" onClick={() => { this.handleCloseReminder(); noteCtrl.getToday(note._id, note) }}>Later Today<div id="remindermenu">8:00 PM</div></MenuItem>
                                             <MenuItem id="menuitems" onClick={() => { this.handleCloseReminder(); noteCtrl.getTomorrow(note._id, note) }}>Tomorrow<div id="remindermenu">8:00 AM</div></MenuItem>
                                             <MenuItem id="menuitems" onClick={() => { this.handleCloseReminder(); noteCtrl.getNextWeek(note._id, note) }}>Next Week<div id="remindermenu">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Mon, 8:00 AM</div></MenuItem>
                                             <MenuItem id="menuitems" onClick={this.handleCloseReminder}>
@@ -256,7 +248,6 @@ class OtherNote extends Component {
                                                 aria-owns={anchorElColor ? 'color-menu' : null}
                                                 aria-haspopup="true"
                                                 onClick={this.handleClickColor}
-                                            // onMouseOver={this.handleClickColor}
                                             >
                                                 <img src={changecolor} alt="changecolor" id="noteicons" />
                                             </IconButton>
@@ -337,7 +328,6 @@ class OtherNote extends Component {
                                             type="file"
                                             ref={fileInput => this.fileInput = fileInput}
                                             onChange={(event) => {this.handleImageChange(event)}} 
-                                            // onChange={((e) => this.handleImageChange(e, note._id))}
                                         >
                                         </input>
                                         <Tooltip title="Add image">
@@ -385,6 +375,7 @@ class OtherNote extends Component {
                                     </div>
                                 </Card>
                             </div>
+
                             {/* ----------------------- Edit Note Implementation -------------------- */}
                             <div>
                                 <Dialog
@@ -444,9 +435,6 @@ class OtherNote extends Component {
 
                                             <Menu
                                                 id="simple-menu-items"
-                                            // anchorEl={anchorEl}
-                                            // open={Boolean(anchorEl)}
-                                            // onClose={this.handleClose}
                                             >
                                                 <MenuItem>Delete note</MenuItem>
                                                 <MenuItem>Add label</MenuItem>
@@ -466,7 +454,7 @@ class OtherNote extends Component {
                             </div>
 
                             {/* ----------------------- Add Label On Note -------------------- */}
-                            {/* <Menu
+                            <Menu
                                 id="simple-menu-add-label"
                                 anchorEl={anchorElAddLabel}
                                 open={Boolean(anchorElAddLabel)}
@@ -478,37 +466,36 @@ class OtherNote extends Component {
                                     disableUnderline={true}
                                     type="text"
                                     placeholder="Enter label name"
-                                // onClick={() => this.handleClickShow()}
                                 />
-                                {Object.keys(this.state.labels).map((label) => {
-                                    var labelKey = label;
-                                    var labelName = this.state.labels[labelKey];
-                                    return (
-                                        <div>
-                                            {/* <Checkbox color="default"/>
-                                            <div>{labelName.label}</div> */}
-                                            {/* <FormControlLabel
-                                                id="add-label-note"
-                                                control={
-                                                    <Checkbox
-                                                        // id="add-label-checkbox"
-                                                        style={{ width: 36, height: 36, padding: 5 }}
-                                                        icon={<CheckBoxOutlineBlankIcon style={{ fontSize: 20 }} />}
-                                                        checkedIcon={<CheckBoxIcon style={{ fontSize: 20 }} />}
-                                                        // checked={this.state.checkedB}
-                                                        // onChange={this.handleChange('checkedB')}
-                                                        // value="checkedB"
-                                                        color="default"
-                                                        onClick={() => {this.getLabel(key, data, labelName.label);this.handleClose()}}
-                                                    />
-                                                }
-                                                label={labelName.label}
-                                            />
-                                        </div>
-                                    );
+                                {this.state.labels.map((label) => {
+                                    if(userId === label.userId) {
+                                        return (
+                                            <div>
+                                                <FormControlLabel
+                                                    id="add-label-note"
+                                                    control={
+                                                        <Checkbox
+                                                            style={{ width: 36, height: 36, padding: 5 }}
+                                                            icon={<CheckBoxOutlineBlankIcon style={{ fontSize: 20 }} />}
+                                                            checkedIcon={<CheckBoxIcon style={{ fontSize: 20 }} />}
+                                                            color="default"
+                                                            onClick={() => {this.getLabel(label._id, label, label.newlabel);this.handleClose()}}
+                                                        />
+                                                    }
+                                                    label={label.newlabel}
+                                                />
+                                            </div>
+                                        );
+                                    }
+                                    else {
+                                        return(
+                                            <div>
+                                            </div>
+                                        )
+                                    }
                                 })
                                 }
-                            </Menu> */}
+                            </Menu>
                         </div> 
                         </form>
                     );

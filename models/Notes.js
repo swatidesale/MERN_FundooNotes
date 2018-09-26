@@ -26,6 +26,9 @@ const NoteSchema = new Schema({
     },
     reminder: {
         type: String
+    },
+    userId: {
+        type: String
     }
 });
 

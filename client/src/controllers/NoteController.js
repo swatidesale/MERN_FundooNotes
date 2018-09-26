@@ -10,11 +10,11 @@ var i;
 
 class NoteController {
     // reload() {
-    //     // $(document).ready(($) => {
-    //     //     $(document).on('submit', '#submit-form', (event) => {
-    //     //         event.preventDefault();
-    //     //     });
-    //     // });
+    //     $(document).ready(($) => {
+    //         $(document).on('submit', '#submit-form', (event) => {
+    //             event.preventDefault();
+    //         });
+    //     });
 
     //     $.ajax({
     //         url: "/home/notes",
@@ -24,9 +24,9 @@ class NoteController {
     //         }
     //     });
 
-    //     // $(document).ready(function() {
-    //     //     $('#submit-form').delay(1000).load('/home/notes');
-    //     // });
+    //     $(document).ready(function() {
+    //         $('#submit-form').delay(1000).load('/home/notes');
+    //     });
     // }
 
     notesInGridView() {
@@ -42,9 +42,6 @@ class NoteController {
     }
 
     onUpdateNote(key,note) {
-        console.log("Onclik update note");
-        
-        // const { notetitle, notedata, ispin, istrash, isarchive } = this.state;
         const ispin  = note.ispin;
         const isarchive = note.isarchive;
         const istrash = note.istrash;
@@ -167,17 +164,14 @@ class NoteController {
     }
 
     onNoteEdit(title, notedata, key, data) {
-        console.log("onClickEdit");
         data = {
             title: title,
             notedata: notedata
         }
         this.onUpdateNote(key, data);
-        // window.location.href = '/home/notes';
     }
 
     deleteForever(key, data) {
-        console.log("Inside delete");
         axios.delete('/api/notes/notes/'+key, { })
         .then((result) => {
             // history.push('/home/notes');

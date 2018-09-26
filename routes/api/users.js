@@ -1,5 +1,4 @@
 var settings = require('../../config/settings');
-// require('../../config/passport');
 var express = require('express');
 var jwt = require('jsonwebtoken');
 var router = express.Router();
@@ -21,8 +20,7 @@ router.post('/register', (req,res) => {
             firstname: req.body.firstname,
             lastname: req.body.lastname,
             username: req.body.username,
-            password: req.body.password,
-            // confirmPassword: req.body.confirmPassword
+            password: req.body.password
         });
 
         //save user
@@ -52,6 +50,7 @@ router.post('/login', (req,res) => {
                     var token = jwt.sign(user.toJSON(), settings.secret);
                     //return the information including token as JSON
                     res.json({success: true, user: user, token: 'JWT ' + token});
+                    res.cookie('token',token,{ httpOnly: true}).sendStatus(200);
                 }
                 else {
                     res.status(402).send({success: false, msg: "Authentication failed, Wrong password"});
@@ -106,7 +105,6 @@ router.post('/forgot', (req,res,next) => {
                 text: 'You are receiving this because you (or someone else) have requested the reset' + 
                 ' password for your account.\n\n Please click on following link, or paste this into your' +
                 ' browser to complete the proccess.\n\n' +
-                // 'http://' + req.headers.host + '/api/users/reset/' + token + '\n\n' + 
                 'http://localhost:3000/resetPassword/' + user._id + token + '\n\n' +
                 ' if you did not requested this, please ignore this email and your password will remain unchanged.\n' 
             };
@@ -141,8 +139,6 @@ router.post('/reset/:token', function(req, res) {
       function(done) {
         User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } }, function(err, user) {
             if (!user) {
-                // req.flash('error', 'Password reset token is invalid or has expired.');
-                // return res.redirect('back');
                 res.status(401).send({success: false, msg: 'Password reset token is invalid or has expired.'});
             }
     
@@ -151,9 +147,7 @@ router.post('/reset/:token', function(req, res) {
             user.resetPasswordExpires = undefined; 
 
             user.save(function(err) {
-                // req.logIn(user, function(err) {
-                    done(err, user);
-                // });
+                done(err, user);
             });
         });
       },
@@ -173,15 +167,13 @@ router.post('/reset/:token', function(req, res) {
             'This is a confirmation that the password for your account ' + user.username + ' has just been changed.\n'
         };
         smtpTransport.sendMail(mailOptions, function(err) {
-        //   req.flash('success', 'Success! Your password has been changed.');
-        //   done(err);
             res.json({success: true, msg: 'Success! Your password has been changed.'})
         });
       }
     ], function(err) {
-    //   res.redirect('/');
         res.json({success: false, msg: 'Failed'});
     });
   });
+
 module.exports = router;
 

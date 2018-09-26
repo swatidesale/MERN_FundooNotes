@@ -7,7 +7,7 @@ import NotePage from './components/notes/Note';
 import ResetPasswordPage from './components/pages/ResetPasswordPage';
 import ArchiveNotesPage from './components/notes/actions/ArchiveNotes';
 import TrashNotes from './components/notes/actions/TrashNotes';
-// import ReminderNotes from './components/notes/actions/ReminderNotes';
+import ReminderNotes from './components/notes/actions/ReminderNotes';
 // import SearchNotes from './components/notes/actions/SearchNotes';
 import { createBrowserHistory } from 'history';
 import './App.css';
@@ -28,7 +28,7 @@ class App extends Component {
                 <Route  path='/note' component={NotePage}/>
                 <Route  path='/archive' component={ArchiveNotesPage}/>
                 <Route  path='/trash' component={TrashNotes}/>
-                {/* <Route  path='/reminder' component={ReminderNotes}/> */}
+                <Route  path='/reminder' component={ReminderNotes}/>
                 {/* <Route path='/search' component={SearchNotes}/> */}
               </Route> 
           </div>

@@ -2,11 +2,11 @@ const express = require('express');
 
 const router = express.Router();
 
-//Note Model
+//Label Model
 const Label = require('../../models/Labels');
 
-// @route GET api/notes
-// @desc GET all notes
+// @route GET api/labels
+// @desc GET all labels
 // @access Public
 router.get('/labels', (req,res) => {
     Label.find()
@@ -14,16 +14,9 @@ router.get('/labels', (req,res) => {
         .then(label => res.json(label));
 });
 
-// router.get('/', function(req, res, next) {
-//     Book.find(function (err, products) {
-//       if (err) return next(err);
-//       res.json(products);
-//     });
-//   });
-
 /*----- Save Note -----*/
-// @route POST api/notes
-// @desc POST a note
+// @route POST api/labels
+// @desc POST a label
 // @access Public
 router.post('/labels', (req,res) => {
     const newLabel = new Label({
@@ -43,32 +36,25 @@ router.post('/labels', (req,res) => {
 });
 
 /*----- Delete Note ------*/
-// @route DELETE api/users
-// @desc DELETE a user
+// @route DELETE api/labels
+// @desc DELETE a label
 // @access Public
-// router.delete('/notes/:id', (req,res) => {
-//     Note.findById(req.params.id)
-//         .then(user => user.remove().then(() => res.json({ success: true }))
-//         ).catch(err => res.status(404).json({ success: false }))
-// });
-
-// router.delete('/notes/:id', function(req, res, next) {
-//     Note.findByIdAndRemove(req.params.id, req.body, function (err, post) {
-//       if (err) return next(err);
-//       res.json(post);
-//     });
-//   });
-  
+router.delete('/labels/:id', function(req, res, next) {
+    Label.findByIdAndRemove(req.params.id, req.body, function (err, post) {
+      if (err) return next(err);
+      res.json(post);
+    });
+});
   
 /*----- Update Note ------*/
 // @route PUT api/notes
 // @desc PUT a note
 // @access Public 
-// router.put('/notes/:id', (req,res,next) => {
-//     Note.findByIdAndUpdate(req.params.id, req.body, function(err, post) {
-//         if(err) return next(err);
-//         res.json(post);
-//     });
-// });
+router.put('/labels/:id', (req,res,next) => {
+    Label.findByIdAndUpdate(req.params.id, req.body, function(err, post) {
+        if(err) return next(err);
+        res.json(post);
+    });
+});
 
 module.exports = router;

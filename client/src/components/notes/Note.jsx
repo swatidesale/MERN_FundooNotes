@@ -53,9 +53,10 @@ class Note extends Component {
 
     addNote() {
         const { notetitle, notedata } = this.state;
-        
+        const userId = localStorage.getItem('userKey');
+
         if(notedata !== null || notetitle !== null) {
-            axios.post('/api/notes/notes', { notetitle, notedata})
+            axios.post('/api/notes/notes', { userId, notetitle, notedata})
                 .then((result) => {
                 console.log("Result :",result);
                 if(result.data.success === false) {
@@ -146,9 +147,6 @@ class Note extends Component {
                         <IconButton color="primary" id="notebuttons">
                             <img src={archive} alt="archive" id="noteicons"/>
                         </IconButton>
-                        {/* <IconButton color="primary" >
-                            <img src={more} alt="more" id="noteicons"/>
-                        </IconButton> */}
 
                         <IconButton color="primary" id="notebuttons"
                             aria-owns={anchorEl ? 'simple-menu-items' : null}

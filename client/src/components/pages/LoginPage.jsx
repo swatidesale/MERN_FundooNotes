@@ -43,7 +43,6 @@ class LoginPage extends Component {
         var user = result.data.user.firstname+" "+result.data.user.lastname;
         localStorage.setItem('user',user);
         localStorage.setItem('userKey',result.data.user._id);
-        console.log("Login..............",result.data.user._id);
         this.setState({ message: '' });
         this.setState({status: false });
         window.location.href='/home/notes';

@@ -85,8 +85,6 @@
   width:67px;
   height: 36px;
   margin-left: 205px;
-  /* font-size: 12px;
-  font-weight: bold; */
 }
 
 .dashboard {
@@ -163,12 +161,8 @@
 }
 
 .profilediv {
-  /* width: 275px; */
   height: 138px;
   border: 5px;
-  /* top: 64; */
-  /* right: 8px; */
-  /* background-color: aqua; */
 }
 
 .rootdiv {
@@ -181,13 +175,11 @@
 }
 
 .resetPasswordBtn {
-  /* margin-left: 60px; */
   width: 200px;
   height: 25px;
 }
 
 .signoutdiv {
-  /* width: 317px; */
   height: 51px;
   align-self: center;
   background-color:rgba(0,0,0,.05);
@@ -201,8 +193,6 @@
 }
 
 .signoutcard {
-  /* margin-left: 975px;
-  margin-top: -73px; */
   top: 60px;
   right: 10px;
   width: 317px;
@@ -217,13 +207,6 @@
   margin-top: 7px;
   text-transform: initial;
 }
-
-/* .searchBar {
-  height: 40px;
-  width: 500px;
-  margin-left: 30px;
-  background-color: white;
-} */
 
 .title {
   margin-top: 10px;
@@ -264,17 +247,8 @@
   float: left;
   margin-right: 20px;
   margin-bottom: 20px;
-  /* display: table-row; */
   flex-direction: row;
-  /* margin-left: 100px; */
 }
-
-/* width: 100%;
-margin-left: 400px; 
-margin-top: 35px;
-opacity: 0.5;
-font-weight: bold;
-font-size: 15px; */
 
 .displaynotes:hover {
   box-shadow: 0 0 11px rgba(33,33,33,.5); 
@@ -328,12 +302,6 @@ font-size: 15px; */
   border-color: gray;
 }
 
-/* .color-change-div {
-  width: 22px;
-  height: 22px;
-  border-radius: 11px;
-} */
-
 /*----------- Reminder CSS ----------*/
 #remindermenu {
   /* margin-left: 100px; */
@@ -362,26 +330,6 @@ font-size: 15px; */
   padding-left: 5px;
 }
 
-/* .reminderdisplay {
-  border-radius: 2px;
-  height: 30px;
-  width: 100px;
-} */
-/* Create two equal columns that floats next to each other */
-/* .column {
-  float: left;
-  width: 18%;
-  padding: 10px;
-} */
-
-/* ----------- Edit Notes CSS ----------
-.updatedialog {
-  height: 163px;
-  width: 600px; 
-  overflow: hidden;
-} */
-
-
 /* -----------------Create Label Card ----------------- */
 .labelondialog {
   margin-top: 15px; 
@@ -407,7 +355,7 @@ font-size: 15px; */
 
 #deletelabelbtn {
   width: 29px;
-  height: 26px;
+  height: 29px;
   margin-left: -5px;
 }
 
@@ -416,32 +364,31 @@ font-size: 15px; */
 }
 
 #editlabelbtn {
-  width: 29px;
-  height: 26px;
-  margin-left: -2px;
+  width: 30px;
+  height: 30px;
+  margin-left: 15px;
 }
 
 #deletelabelimg {
+  margin-top: -6px;
   opacity: 0.5;
   width: 20px;
   height: 17px;
 }
 
 #editlabelimg {
-  opacity: 0.5;
-  width: 20px;
-  height: 20px;
+  margin-top: -8px;
+  width: 22px;
+  height: 22px;
 }
 
 /* -----------------Create Label Card ----------------- */
 #label-note {
   cursor: default;
   font-size: 14px;
-  /* padding: 0 12px; */
   padding-top: 5px;
   padding-left: 12px;
   outline-color: white;
-  /* height: 36px; */
 }
 
 #label-search {
@@ -470,16 +417,8 @@ font-size: 15px; */
   border-radius: 0px;
 }
 
-/* #search-note-card-color{
-  width: 100%;
-  border-radius: 0px;
-  margin-top: 10px;
-  height: 117px;
-} */
-
 #types-div {
   width: 100%;
-  /* height: 40px; */
   padding: 10px;
   font-weight: 500;
   font-size: 15px;
@@ -491,21 +430,14 @@ font-size: 15px; */
   background-color:dodgerblue;
   margin-right: 4px;
   border-radius: 0px;
-  /* margin-bottom: -142px; */
 }
 
 #search-reminder {
   height: 30px;
   margin-left: 22px;
 }
-/* #image-div {
-  width: 125px;
-  height: 125px;
-}*/
 
 #reminder-div {
-  /* width: 125px;
-  height: 28px; */
   color: white;
   text-transform: initial;
   font-size: 12px;
@@ -536,9 +468,7 @@ font-size: 15px; */
   border-radius: 5px;
   font-family: Arial;
   font-size: 15px;
-  /* text-transform: uppercase; */
   background-color: rgb(236, 255, 216);
-  /* color: green; */
   text-align: center;
   margin-top: 10px;
   margin-left: 460px;
@@ -552,9 +482,7 @@ font-size: 15px; */
   border-radius: 5px;
   font-family: Arial;
   font-size: 15px;
-  /* text-transform: uppercase; */
   background-color: rgb(236, 255, 216);
-  /* color: green; */
   text-align: center;
   margin-top: 60px;
   margin-left: 435px;

@@ -70,37 +70,28 @@ class ResetPasswordPage extends Component {
 
                     <div className="container">
                     <CardContent>
-                                {/* <TextField
-                                    id="username"
-                                    label="Email Id"
-                                    margin="normal"
-                                    // required
-                                    onChange={this.handleChange} value={this.state.username}
-                                />
-                                <br/> */}
+                        <TextField
+                            style={{width:200}}
+                            id="password"
+                            label="New Password"
+                            type="password"
+                            margin="normal"
+                            required
+                            onChange={this.handleChange} value={this.state.password}
+                        />
+                        <br/>
 
-                                <TextField
-                                    style={{width:200}}
-                                    id="password"
-                                    label="New Password"
-                                    type="password"
-                                    margin="normal"
-                                    required
-                                    onChange={this.handleChange} value={this.state.password}
-                                />
-                                <br/>
-
-                                <TextField
-                                    style={{width:200}}
-                                    id="confirmPassword"
-                                    label="Confirm Password"
-                                    type="password"
-                                    margin="normal"
-                                    required
-                                    onChange={this.handleChange} value={this.state.confirmPassword}
-                                />
-                                <br/>
-                            </CardContent>
+                        <TextField
+                            style={{width:200}}
+                            id="confirmPassword"
+                            label="Confirm Password"
+                            type="password"
+                            margin="normal"
+                            required
+                            onChange={this.handleChange} value={this.state.confirmPassword}
+                        />
+                        <br/>
+                    </CardContent>
                     </div>
                     <CardActions className="resetPasswordCardAction">
                         <Button className="resetPasswordBtn" color="primary" variant="contained" onClick={this.handleSubmit}>

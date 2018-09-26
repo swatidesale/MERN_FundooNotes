@@ -5,12 +5,12 @@ import { Input, Button } from '@material-ui/core';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-// import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Chip from '@material-ui/core/Chip';
-// import Checkbox from '@material-ui/core/Checkbox';
+import Checkbox from '@material-ui/core/Checkbox';
 import Tooltip from '@material-ui/core/Tooltip';
-// import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
-// import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -97,12 +97,8 @@ class ArchiveNotes extends Component {
         this.setState({ anchorElRemind: null });
     };
 
-    handleDeleteLabel(key, data) {
-        // labelCtrl.removeLabel(key, data);
-    }
-
     componentDidMount() {
-        // axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');
+        axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');
         axios.get('/api/notes/notes')
           .then(res => {
             this.setState({ notes: res.data });
@@ -113,27 +109,29 @@ class ArchiveNotes extends Component {
         //     }
         //   });
 
-    }
-
-    getLabel(key, data, labelName) {
-        // labelCtrl.getLabelData(key, data, labelName);
+        axios.get('/api/labels/labels')
+        .then(res => {
+              this.setState({ labels: res.data });   
+        })
+        //   .catch((error) => {
+        //     if(error.response.status === 401) {
+        //       this.props.history.push("/login");
+        //     }
+        //   });
     }
 
     render() {
+        const userId = localStorage.getItem('userKey');
         const { anchorEl } = this.state;
         const { anchorElRemind } = this.state;
         const { anchorElAddLabel } = this.state;
         const { anchorElColor } = this.state;
-        // var archiveNotesCount = [];
         return (
             this.state.notes.map((note) => {
-                if (note.isarchive === true && note.ispin === false) {
-                    // archiveNotesCount.push(data);
-                    // localStorage.setItem("archiveNotesCount", archiveNotesCount.length);
+                if (note.isarchive === true && note.ispin === false && userId === note.userId) {
                     return (
                         <form>
                             <div className="display-notes-div">
-                            {/* {localStorage.getItem("archiveNotesCount")} */}
                             <div  className="displaynotes column">
                             <Card style={{width:'100%', backgroundColor:note.background, borderRadius:0 }}>
                                 <div style={{width: '90%', marginTop: 10, marginLeft: 10, fontWeight: 'bolder', position: 'relative' }}>
@@ -161,7 +159,6 @@ class ArchiveNotes extends Component {
                                             <img src={pickdate} alt="pickdate" id="avtarremindermenuicons" />
                                         }
                                         label={note.reminder}
-                                        // onClick={handleClick}
                                         onDelete={() => noteCtrl.handleDeleteReminder(note._id, note)}
                                         style={{ borderRadius: 1, height: 24, marginLeft: 10, fontSize: 11 }}
                                     />
@@ -225,7 +222,6 @@ class ArchiveNotes extends Component {
                                         </IconButton>
                                     </Tooltip>
 
-                                    {/* <div id="change-color-div"> */}
                                     <Menu
                                             id="color-menu"
                                             position="right top"
@@ -401,9 +397,6 @@ class ArchiveNotes extends Component {
 
                                             <Menu
                                                 id="simple-menu-items"
-                                            // anchorEl={anchorEl}
-                                            // open={Boolean(anchorEl)}
-                                            // onClose={this.handleClose}
                                             >
                                                 <MenuItem>Delete note</MenuItem>
                                                 <MenuItem>Add label</MenuItem>
@@ -422,8 +415,8 @@ class ArchiveNotes extends Component {
                                 </Dialog>
                             </div>
 
-                            {/* ----------------------- Add Label On Note -------------------- */}
-                            {/* <Menu
+                           {/* ----------------------- Add Label On Note -------------------- */}
+                           <Menu
                                 id="simple-menu-add-label"
                                 anchorEl={anchorElAddLabel}
                                 open={Boolean(anchorElAddLabel)}
@@ -436,29 +429,35 @@ class ArchiveNotes extends Component {
                                     type="text"
                                     placeholder="Enter label name"
                                 />
-                                {Object.keys(this.state.labels).map((label) => {
-                                    var labelKey = label;
-                                    var labelName = this.state.labels[labelKey];
-                                    return (
-                                        <div>
-                                            <FormControlLabel
-                                                id="add-label-note"
-                                                control={
-                                                    <Checkbox
-                                                        style={{ width: 36, height: 36, padding: 5 }}
-                                                        icon={<CheckBoxOutlineBlankIcon style={{ fontSize: 20 }} />}
-                                                        checkedIcon={<CheckBoxIcon style={{ fontSize: 20 }} />}
-                                                        color="default"
-                                                        onClick={() => this.getLabel(key, data, labelName.label)}
-                                                    />
-                                                }
-                                                label={labelName.label}
-                                            />
-                                        </div>
-                                    );
+                                {this.state.labels.map((label) => {
+                                    if(userId === label.userId) {
+                                        return (
+                                            <div>
+                                                <FormControlLabel
+                                                    id="add-label-note"
+                                                    control={
+                                                        <Checkbox
+                                                            style={{ width: 36, height: 36, padding: 5 }}
+                                                            icon={<CheckBoxOutlineBlankIcon style={{ fontSize: 20 }} />}
+                                                            checkedIcon={<CheckBoxIcon style={{ fontSize: 20 }} />}
+                                                            color="default"
+                                                            onClick={() => {this.getLabel(label._id, label, label.newlabel);this.handleClose()}}
+                                                        />
+                                                    }
+                                                    label={label.newlabel}
+                                                />
+                                            </div>
+                                        );
+                                    }
+                                    else {
+                                        return(
+                                            <div>
+                                            </div>
+                                        )
+                                    }
                                 })
                                 }
-                            </Menu> */}
+                            </Menu>
                         </div> 
                         </form>
                     );

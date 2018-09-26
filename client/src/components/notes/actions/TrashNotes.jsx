@@ -30,7 +30,7 @@ class TrashNotes extends Component {
     };
 
     componentDidMount() {
-        // axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');
+        axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');
         axios.get('/api/notes/notes')
           .then(res => {
             this.setState({ notes: res.data });
@@ -43,22 +43,15 @@ class TrashNotes extends Component {
 
     }
 
-    handleDeleteLabel(key, data) {
-        // labelCtrl.removeLabel(key, data);
-    }
-
     render() {
+        const userId = localStorage.getItem('userKey');
         const { anchorEl } = this.state;
-        // var trashNotesCount = [];
         return (
             this.state.notes.map((note) => {
-                if (note.istrash === true && note.ispin === false) {
-                    // trashNotesCount.push(data);
-                    // localStorage.setItem("trashNotesCount", trashNotesCount.length);
+                if (note.istrash === true && note.ispin === false && userId === note.userId) {
                     return (
                         <form>
                             <div className="display-notes-div">
-                            {/* {localStorage.getItem("trashNotesCount")} */}
                             <div id="div_element" className="displaynotes column ">
                                 <Card style={{ width: '100%', backgroundColor:note.background, borderRadius:0}}>
                                     <div style={{ width: '90%', marginTop: 10, marginLeft: 10, fontWeight: 'bolder', position: 'relative' }}>
