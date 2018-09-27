@@ -120,6 +120,14 @@ class PinNote extends Component {
         this.setState({ anchorElRemind: null });
     };
 
+    triggerInputFile() {
+        this.fileInput.click();
+    }
+
+    handleImageChange(event) {
+        
+    }
+
     render() {
         const userId = localStorage.getItem('userKey');
         const { anchorEl } = this.state;
@@ -296,8 +304,25 @@ class PinNote extends Component {
                                             </Tooltip>
                                         </Menu>
 
+                                         {/* <input style={{ display: 'none' }}
+                                            type="file"
+                                            ref={fileInput => this.fileInput = fileInput}
+                                            onChange={this.handleImageChange} 
+                                        >
+                                        </input>
                                         <Tooltip title="Add image">
-                                            <IconButton color="primary" id="notebuttons">
+                                            <IconButton color="primary" id="notebuttons" onClick={this.triggerInputFile}>
+                                                <img src={newnotewithimage} alt="newnotewithimage" id="noteicons" />
+                                            </IconButton>
+                                        </Tooltip> */}
+
+                                        <input style={{display: 'none'}}
+                                            type="file"
+                                            ref={fileInput => this.fileInput = fileInput}
+                                            onChange={this.handleImageChange}
+                                        />
+                                        <Tooltip title="Add image">
+                                            <IconButton color="primary" id="notebuttons" onClick={this.triggerInputFile}>
                                                 <img src={newnotewithimage} alt="newnotewithimage" id="noteicons" />
                                             </IconButton>
                                         </Tooltip>

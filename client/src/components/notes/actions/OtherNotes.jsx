@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import Card from '@material-ui/core/Card';
 import Menu from '@material-ui/core/Menu';
+import Avatar from '@material-ui/core/Avatar';
+import PersonIcon from '@material-ui/icons/Person';
 import MenuItem from '@material-ui/core/MenuItem';
-import { Input, Button } from '@material-ui/core';
+import { Input, Button, Divider } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Chip from '@material-ui/core/Chip';
@@ -52,6 +54,7 @@ class OtherNote extends Component {
             imageUrl: '',
             archive: false,
             color: true,
+            opencollaborator: false
         }
 
         this.handleClickLabel = this.handleClickLabel.bind(this);
@@ -60,6 +63,8 @@ class OtherNote extends Component {
         this.triggerInputFile = this.triggerInputFile.bind(this);
         this.handleClickColor = this.handleClickColor.bind(this);
         this.handleCloseColor = this.handleCloseColor.bind(this);
+        this.handleClickCollaboratorClose = this.handleClickCollaboratorClose.bind(this);
+        this.handleClickCollaboratorOpen = this.handleClickCollaboratorOpen.bind(this);
     }
 
     componentDidMount() {
@@ -124,8 +129,16 @@ class OtherNote extends Component {
     };
 
     handleClickClose = () => {
-        this.setState({ open: false });
+        this.setState({open: false });
     };
+
+    handleClickCollaboratorOpen = () => {
+        this.setState({ opencollaborator: true });
+    }
+
+    handleClickCollaboratorClose = () => {
+        this.setState({ opencollaborator: false });
+    }
 
     triggerInputFile() {
         console.log("Inside trigger");
@@ -239,7 +252,7 @@ class OtherNote extends Component {
 
 
                                         <Tooltip title="Collaborator">
-                                            <IconButton type="submit" color="primary" id="notebuttons">
+                                            <IconButton color="primary" id="notebuttons" onClick={this.handleClickCollaboratorOpen}>
                                                 <img src={collaborator} alt="collaborator" id="noteicons" />
                                             </IconButton>
                                         </Tooltip>
@@ -497,7 +510,35 @@ class OtherNote extends Component {
                                 })
                                 }
                             </Menu>
-                        </div> 
+
+                            {/* ----------------------- Collaborator -------------------- */}
+                            <div>
+                                <Dialog
+                                    open={this.state.opencollaborator}
+                                    onClose={this.handleClickCollaboratorClose}
+                                    aria-labelledby="alert-dialog-title"
+                                    aria-describedby="alert-dialog-description"
+                                >
+                                    <DialogTitle id="alert-dialog-title">
+                                        Collaborators
+                                    </DialogTitle>
+                                    <Divider id="collaborator-title-divider"></Divider>
+                                    <DialogContent>
+                                        <Avatar>
+                                            <PersonIcon />
+                                        </Avatar>
+                                        <div id="collaborator-data-div">
+                                            <span style={{fontWeight: 700}}>Swati Desale</span><span id="owner-span">(Owner)</span><br></br>
+                                            <span style={{opacity: 0.7}}>sadesale94@gmail.com</span>
+                                        </div>
+                                    </DialogContent>
+                                    <DialogActions id="collaborator-actions">
+                                        <Button id="collaborator-cancel-btn" onClick={() => {this.handleClickCollaboratorClose()}}>cancel</Button>
+                                        <Button id="collaborator-save-btn" onClick={() => {this.handleClickCollaboratorClose()}}>save</Button>
+                                    </DialogActions>
+                                </Dialog>
+                            </div>
+                        </div>  
                         </form>
                     );
                 }

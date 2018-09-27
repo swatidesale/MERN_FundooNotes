@@ -489,3 +489,43 @@
   margin-bottom: -100px;
 
 }
+
+
+/* -----------------Collaborator CSS----------------- */
+#alert-dialog-title {
+  width:600px;
+  margin-top:-10px;
+  margin-left: -5px;
+}
+
+#collaborator-title-divider {
+  width:580px;
+  margin-top:-10px;
+  margin-bottom:20px;
+  margin-left:10px;
+}
+
+#collaborator-data-div {
+  margin-left: 50px;
+  margin-top: -35px;
+  font-size: 13px;
+}
+
+#owner-span {
+  font-style: italic;
+  margin-left: 5px;
+}
+
+#collaborator-actions {
+  background-color: rgba(0, 0, 0, 0.05);
+  margin-left: -3px;
+  width: 603px;
+}
+
+#collaborator-save-btn {
+  height: 10px;
+}
+
+#collaborator-save-btn {
+
+}
