@@ -1,7 +1,4 @@
 # MERN_FundooNotes
-
-
-   
   
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
@@ -134,20 +131,31 @@ We are always open to [your feedback](https://github.com/facebookincubator/creat
 After creation, your project should look like this:
 
 ```
-my-app/
-  README.md
-  node_modules/
-  package.json
-  public/
-    index.html
-    favicon.ico
-  src/
-    App.css
-    App.js
-    App.test.js
-    index.css
-    index.js
-    logo.svg
+fundooNotes/ 
+  README.md 
+  config/ 
+  models/ 
+  node_modules/ 
+  routes/ 
+    api/ 
+  package.json 
+  server.js 
+  client/ 
+    node_modules/ 
+    public/ 
+      index.html 
+      fevicon.ico 
+    src/ 
+      assets/ 
+      components/ 
+        notes/ 
+        pages/ 
+      controllers/ 
+      App.css 
+      App.js 
+      App.test.js 
+      index.css 
+      index.js
 ```
 
 For the project to build, **these files must exist with exact filenames**:
