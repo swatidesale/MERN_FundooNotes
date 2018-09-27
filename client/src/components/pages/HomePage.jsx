@@ -159,7 +159,8 @@ class HomePage extends Component {
     createLabel() {
         const { newlabel } = this.state;
         const userId = localStorage.getItem('userKey');
-        axios.post('/api/labels/labels', { userId, newlabel })
+        if( newlabel !== null ) {
+            axios.post('/api/labels/labels', { userId, newlabel })
             .then((result) => {
                 if(result.data.success === false) {
                     console.log("Inside if");
@@ -168,6 +169,7 @@ class HomePage extends Component {
                     history.push("/home/notes");
                 }
             });
+        }
     }
 
     refreshPage() {

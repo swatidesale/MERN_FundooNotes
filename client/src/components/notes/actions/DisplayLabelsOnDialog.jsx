@@ -18,8 +18,12 @@ class DisplayLabelsOnDialog extends Component {
             label: null,
             img: labelicon,
             opacity: 0.5,
-            opacity1: 0.5
+            opacity1: 0.5,
+            open: true
         }
+
+        this.handleClickEditLabel = this.handleClickEditLabel.bind(this);
+        this.handleCloseEditLabel = this.handleCloseEditLabel.bind(this);
     }
 
     componentDidMount() {
@@ -32,6 +36,14 @@ class DisplayLabelsOnDialog extends Component {
         //       this.props.history.push("/login");
         //     }
         //   });
+    }
+
+    handleClickEditLabel() {
+        this.setState({ open: false });
+    }
+    
+    handleCloseEditLabel() {
+        this.setState({ open: true });
     }
 
     render() {
@@ -82,6 +94,61 @@ class DisplayLabelsOnDialog extends Component {
                                     }}
                                 />
                             </IconButton>
+
+                            {/* {this.state.open ?
+                                <div>
+                                    <Input 
+                                        id="editlabeldata"
+                                        disableUnderline={true} 
+                                        type="text" 
+                                        defaultValue={label.newlabel} 
+                                        onInput={e => this.setState({ label: e.target.value })}
+                                    />
+        
+                                    <IconButton color="inherit" aria-label="labels" id="editlabelbtn" onClick={this.handleClickEditLabel}>
+                                        <img src={editlabel} alt="editlabel" style={{opacity: this.state.opacity1,marginTop: -7, width: 20}}
+                                            onMouseEnter={() => {
+                                                this.setState({
+                                                    opacity1: 1
+                                                })
+                                            }}
+                                    
+                                            onMouseOut={() => {
+                                                this.setState({
+                                                    opacity1: 0.5
+                                                })
+                                            }}
+                                        />
+                                    </IconButton> 
+                                </div>
+
+                                :
+
+                                <div>
+                                    <Input 
+                                        id="editlabeldata"
+                                        disableUnderline={true} 
+                                        type="text" 
+                                        onInput={e => this.setState({ label: e.target.value })}
+                                    />
+        
+                                    <IconButton color="inherit" aria-label="labels" id="editlabelbtn" onClick={() => labelCtrl.editLabel(this.state.label,label._id)}>
+                                        <img src={editlabel} alt="editlabel" style={{opacity: this.state.opacity1,marginTop: -7, width: 20}}
+                                            onMouseEnter={() => {
+                                                this.setState({
+                                                    opacity1: 1
+                                                })
+                                            }}
+                                    
+                                            onMouseOut={() => {
+                                                this.setState({
+                                                    opacity1: 0.5
+                                                })
+                                            }}
+                                        />
+                                    </IconButton> 
+                                </div>
+                            } */}
                         </div>
                     );
                 }

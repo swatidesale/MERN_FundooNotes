@@ -1,4 +1,7 @@
 import axios from 'axios';
+import NoteController from './NoteController';
+
+const noteCtrl = new NoteController();
 
 class LabelController {
     deleteLabel(key) {
@@ -21,6 +24,18 @@ class LabelController {
     editLabel(label,key) {
         if(label !== null)
         this.onUpdateLabel(label,key);
+    }
+
+    getLabel(key, note, label) {
+        console.log("Inside getlabel : ",label.newlabel);
+        
+        note.label = label.newlabel;
+        noteCtrl.onUpdateNote(key,note);
+    }
+
+    handleDeleteLabel(key, note) {
+        note.label = null;
+        noteCtrl.onUpdateNote(key,note);
     }
 }
 

@@ -43,11 +43,14 @@ router.post('/notes', (req,res) => {
         istrash: req.body.istrash,
         isarchive: req.body.isarchive,
         background: req.body.background,
-        reminder: req.body.reminder
+        reminder: req.body.reminder,
+        label: req.body.label,
+        image: req.body.image
     });
 
     // newNote.save().then(note => res.json(note));
-
+    console.log("Label....",req.body.label);
+    
     newNote.save((err) => {
         if(err) {
             console.log("Failed",err);
