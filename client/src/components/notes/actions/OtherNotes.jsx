@@ -50,11 +50,13 @@ class OtherNote extends Component {
             notetitle: null,
             notedata: null,
             labels: [],
-            image: null,
+            images: [],
             imageUrl: '',
             archive: false,
             color: true,
-            opencollaborator: false
+            opencollaborator: false,
+            file: null,
+            imagePreviewUrl: null
         }
 
         this.handleClickLabel = this.handleClickLabel.bind(this);
@@ -68,6 +70,8 @@ class OtherNote extends Component {
     }
 
     componentDidMount() {
+        console.log("Inside component......");
+        
         axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');
         axios.get('/api/notes/notes')
           .then(res => {
@@ -88,6 +92,7 @@ class OtherNote extends Component {
         //       this.props.history.push("/login");
         //     }
         //   });
+
     }
     
     handleClickColor(event) {
@@ -145,17 +150,41 @@ class OtherNote extends Component {
         this.fileInput.click();
     }
     
-    handleImageChange = (event) => {
-        var image = '';
-        var path = '';
-        console.log("Inside handleImageChange : " + event);
-        if (event.target.files[0]) {
-            image = event.target.files[0].name;
-            path = event.target.files[0].path;
-        }
-        console.log("Image name :",image);
-        console.log("File path :",path);
+    handleImageChange = (event,key,note) => {
+        console.log('onImageLoad', event.target.files[0]);
+        this.uploadForm(event.target.files[0],key,note);
     }
+
+    // onImageLoad(e){
+    //     console.log('onImageLoad', e.target.files[0]);
+    //     this.uploadForm(e.target.files[0]);
+    // }
+
+    uploadForm(file,key,note){
+        let form = new FormData(this.refs.myForm);
+        form.append('newimage', file);
+        fetch('/api/images/uploadimage', {
+          method: 'POST',
+          body: form,
+        }).then(res => console.log('res of fetch', res));
+
+
+        // axios.get('/api/images/uploadimage')
+        // .then(res => {
+        //       this.setState({ images: res.data });   
+        // })
+
+        // console.log("Images : ",this.state.images);
+        // note.image = image.image;
+        // noteCtrl.onUpdateNote(key,note);
+    }
+
+    // componentDidUpdate() {
+    //     axios.get('/api/images/uploadimage')
+    //     .then(res => {
+    //           this.setState({ images: res.data });   
+    //     });
+    // }
 
     render() {
         const userId = localStorage.getItem('userKey');
@@ -167,18 +196,23 @@ class OtherNote extends Component {
             this.state.notes.map((note) => {
                 if(note.ispin === false && note.isarchive === false && note.istrash === false && userId === note.userId) {
                     return (
-                        <form>
+                        <form id="upload_form" ref="myForm"  encType="multipart/form-data">
                             <div id="submit" className="display-notes-div">
                             <div id="div_element" className="displaynotes column ">
                                 <Card style={{ width: '100%', backgroundColor:note.background, borderRadius:0 }} >
                                     <div style={{ width: '90%', marginTop: 10, marginLeft: 10, fontWeight: 'bolder', position: 'relative' }}>
-                                        {/* {console.log(data.imageUrl)} */}
-                                        {/* {data.imageUrl ?
-                                    <img src={data.imageUrl} alt="data.imageUrl" width='230px'/>
-                                    :
-                                    null
-                                    } */}
-
+                                        {/* {console.log(note.image)}  */}
+                                        {/* {note.image ?
+                                            <img src={note.image} alt="note.image" width='230px'/>
+                                            :
+                                            null
+                                        } */}
+                                        {/* {
+                                            this.state.images.map((image) => {
+                                                console.log("Note ID," ,image.noteId );
+                                                
+                                            })
+                                        } */}
                                         <div style={{width:'80%', paddingBottom: 20, paddingTop: 10 }} onClick={this.handleClickOpen}>
                                             {note.notetitle}
                                         </div>
@@ -341,11 +375,12 @@ class OtherNote extends Component {
                                         <input style={{ display: 'none' }}
                                             type="file"
                                             ref={fileInput => this.fileInput = fileInput}
-                                            onChange={this.handleImageChange} 
+                                            onChange={(e) => this.handleImageChange(e,note._id,note)} 
+                                            value={this.state.image}
                                         >
                                         </input>
                                         <Tooltip title="Add image">
-                                            <IconButton color="primary" id="notebuttons" onClick={this.triggerInputFile}>
+                                            <IconButton color="primary" id="notebuttons" onClick={(e) => {this.triggerInputFile()}}>
                                                 <img src={newnotewithimage} alt="newnotewithimage" id="noteicons" />
                                             </IconButton>
                                         </Tooltip>

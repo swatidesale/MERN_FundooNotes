@@ -50,7 +50,8 @@ class NoteController {
         const notetitle = note.notetitle;
         const notedata = note.notedata;
         const label = note.label;
-        axios.put('/api/notes/notes/'+key, { notetitle, notedata, ispin, isarchive, istrash, background, reminder, label })
+        const image = note.image;
+        axios.put('/api/notes/notes/'+key, { notetitle, notedata, ispin, isarchive, istrash, background, reminder, label, image })
         .then((result) => {
             // history.push('/home/notes');
             // this.reload();

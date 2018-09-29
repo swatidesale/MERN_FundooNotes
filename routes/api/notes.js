@@ -1,6 +1,8 @@
 const express = require('express');
 
 const router = express.Router();
+// const multer = require('multer');
+// const path = require('path');
 
 // var passport = require('passport');
 // require('../../config/passport')(passport);
@@ -49,7 +51,6 @@ router.post('/notes', (req,res) => {
     });
 
     // newNote.save().then(note => res.json(note));
-    console.log("Label....",req.body.label);
     
     newNote.save((err) => {
         if(err) {
