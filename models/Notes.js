@@ -29,6 +29,15 @@ const NoteSchema = new Schema({
     },
     userId: {
         type: String
+    },
+    label: {
+        type: String
+    },
+    image: {
+        type: String
+    },
+    sharenotewith: {
+        type: String
     }
 });
 

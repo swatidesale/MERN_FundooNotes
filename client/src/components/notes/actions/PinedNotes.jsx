@@ -27,10 +27,12 @@ import remindme from '../../../assets/icons/reminder.svg';
 import redo from '../../../assets/icons/redo.svg';
 import axios from 'axios';
 import NoteController from '../../../controllers/NoteController.js';
+import LabelController  from '../../../controllers/LabelController';
 // import { createBrowserHistory } from 'history';
 
 // const history = createBrowserHistory();
 const noteCtrl = new NoteController();
+const labelCtrl = new LabelController();
 
 class PinNote extends Component {
     constructor() {
@@ -118,6 +120,14 @@ class PinNote extends Component {
         this.setState({ anchorElRemind: null });
     };
 
+    triggerInputFile() {
+        this.fileInput.click();
+    }
+
+    handleImageChange(event) {
+        
+    }
+
     render() {
         const userId = localStorage.getItem('userKey');
         const { anchorEl } = this.state;
@@ -165,15 +175,15 @@ class PinNote extends Component {
                                         null
                                     }
 
-                                    {/* {data.label ?
+                                    {note.label ?
                                         <Chip
-                                            label={data.label}
-                                            onDelete={() => this.handleDeleteLabel(key, data)}
+                                            label={note.label}
+                                            onDelete={() => labelCtrl.handleDeleteLabel(note._id, note)}
                                             style={{ borderRadius: 1, height: 24, marginLeft: 10, fontSize: 11 }}
                                         />
                                         :
                                         null
-                                    } */}
+                                    }
 
                                     <div id="note-btns" style={{ width: 240, height: 40 }}>
                                         <Tooltip title="Reminde me">
@@ -294,8 +304,25 @@ class PinNote extends Component {
                                             </Tooltip>
                                         </Menu>
 
+                                         {/* <input style={{ display: 'none' }}
+                                            type="file"
+                                            ref={fileInput => this.fileInput = fileInput}
+                                            onChange={this.handleImageChange} 
+                                        >
+                                        </input>
                                         <Tooltip title="Add image">
-                                            <IconButton color="primary" id="notebuttons">
+                                            <IconButton color="primary" id="notebuttons" onClick={this.triggerInputFile}>
+                                                <img src={newnotewithimage} alt="newnotewithimage" id="noteicons" />
+                                            </IconButton>
+                                        </Tooltip> */}
+
+                                        <input style={{display: 'none'}}
+                                            type="file"
+                                            ref={fileInput => this.fileInput = fileInput}
+                                            onChange={this.handleImageChange}
+                                        />
+                                        <Tooltip title="Add image">
+                                            <IconButton color="primary" id="notebuttons" onClick={this.triggerInputFile}>
                                                 <img src={newnotewithimage} alt="newnotewithimage" id="noteicons" />
                                             </IconButton>
                                         </Tooltip>
@@ -443,7 +470,7 @@ class PinNote extends Component {
                                                             icon={<CheckBoxOutlineBlankIcon style={{ fontSize: 20 }} />}
                                                             checkedIcon={<CheckBoxIcon style={{ fontSize: 20 }} />}
                                                             color="default"
-                                                            onClick={() => {this.getLabel(label._id, label, label.newlabel);this.handleClose()}}
+                                                            onClick={() => {labelCtrl.getLabel(note._id, note, label);this.handleCloseLabel();this.handleClose()}}
                                                         />
                                                     }
                                                     label={label.newlabel}

@@ -489,3 +489,75 @@
   margin-bottom: -100px;
 
 }
+
+
+/* -----------------Collaborator CSS----------------- */
+#alert-dialog-title {
+  width:600px;
+  margin-top:-10px;
+  margin-left: -5px;
+}
+
+#collaborator-title-divider {
+  width:580px;
+  margin-top:-10px;
+  margin-bottom:20px;
+  margin-left:10px;
+}
+
+#collaborator-data-div {
+  margin-left: 50px;
+  margin-top: -35px;
+  font-size: 13px;
+}
+
+#collaborator-sharewith-div {
+  margin-left: 50px;
+  margin-top: -35px;
+  font-size: 13px;
+  display: flex;
+}
+
+#owner-span {
+  font-style: italic;
+  margin-left: 5px;
+}
+
+#collaborator-actions {
+  background-color: rgba(0, 0, 0, 0.05);
+  margin-left: -3px;
+  width: 603px;
+  height: 45px;
+  text-align: right;
+}
+
+#collaborator-cancel-btn {
+  margin-top: 5px;
+  margin-right: 10px;
+  height: 10px;
+  padding: 5px 14px 5px 14px;
+}
+
+#collaborator-save-btn {
+  margin-top: 5px;
+  margin-right: 10px;
+  height: 10px;
+  padding: 5px 14px 5px 14px;
+}
+
+#sharewith-check-btn {
+  margin-left: 310px;
+  height: 20px;
+  width: 20px;
+}
+
+#sharewith-cancel-btn {
+  margin-left: 337px;
+  height: 20px;
+  width: 20px;
+}
+
+#sharewith-input {
+  width:167px;
+  font-size: 13px;
+}

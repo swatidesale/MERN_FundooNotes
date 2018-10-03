@@ -49,7 +49,10 @@ class NoteController {
         const reminder = note.reminder;
         const notetitle = note.notetitle;
         const notedata = note.notedata;
-        axios.put('/api/notes/notes/'+key, { notetitle, notedata, ispin, isarchive, istrash, background, reminder })
+        const label = note.label;
+        const image = note.image;
+        const sharenotewith = note.sharenotewith;
+        axios.put('/api/notes/notes/'+key, { notetitle, notedata, ispin, isarchive, istrash, background, reminder, label, image, sharenotewith })
         .then((result) => {
             // history.push('/home/notes');
             // this.reload();
@@ -164,11 +167,13 @@ class NoteController {
     }
 
     onNoteEdit(title, notedata, key, data) {
-        data = {
-            title: title,
-            notedata: notedata
+        if(title !== null || notedata !== null) {
+            data = {
+                title: title,
+                notedata: notedata
+            }
+            this.onUpdateNote(key, data);
         }
-        this.onUpdateNote(key, data);
     }
 
     deleteForever(key, data) {
@@ -177,6 +182,24 @@ class NoteController {
             // history.push('/home/notes');
             // this.reload();
         });    
+    }
+
+    onDeleteShareWith(key,note) {
+        note.sharenotewith = null;
+        this.onUpdateNote(key,note);
+    }
+
+    shareNoteWith(shareWith,key,note) {
+        const username = localStorage.getItem('username');
+        const userfullname = localStorage.getItem('user');
+        const sharenotewith = shareWith;
+        axios.post('/api/notes/sharenote', { key,username,sharenotewith,userfullname })
+        .then((result) => {
+
+        })
+        .catch((error) => {
+
+        }); 
     }
 }
 

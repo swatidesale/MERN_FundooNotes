@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
 import Card from '@material-ui/core/Card';
 import Menu from '@material-ui/core/Menu';
+import Avatar from '@material-ui/core/Avatar';
+import PersonIcon from '@material-ui/icons/Person';
+import AddPerson from '@material-ui/icons/PersonAdd';
+import { Cancel, Check } from '@material-ui/icons';
 import MenuItem from '@material-ui/core/MenuItem';
-import { Input, Button } from '@material-ui/core';
+import { Input, Button, Divider } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Chip from '@material-ui/core/Chip';
@@ -27,10 +31,13 @@ import remindme from '../../../assets/icons/reminder.svg';
 import redo from '../../../assets/icons/redo.svg';
 import axios from 'axios';
 import NoteController from '../../../controllers/NoteController.js';
+import LabelController from '../../../controllers/LabelController';
+// import image from '/Users/bridgeit/Desktop/swati/MERNFundooApp/client/src/assets/newimage-1538389742352.jpeg';
 // import { createBrowserHistory } from 'history';
 
 // const history = createBrowserHistory();
 const noteCtrl = new NoteController();
+const labelCtrl = new LabelController();
 
 class OtherNote extends Component {
     constructor() {
@@ -46,18 +53,26 @@ class OtherNote extends Component {
             notetitle: null,
             notedata: null,
             labels: [],
-            image: null,
-            imageUrl: '',
+            images: [],
             archive: false,
             color: true,
+            opencollaborator: false,
+            file: null,
+            imagePreviewUrl: null,
+            sharewith: null,
+            checksharewith: false,
+            userfullname: null,
+            useremail: null
         }
 
         this.handleClickLabel = this.handleClickLabel.bind(this);
         this.handleCloseLabel = this.handleCloseLabel.bind(this);
-        // this.handleImageChange = this.handleImageChange.bind(this);
         this.triggerInputFile = this.triggerInputFile.bind(this);
         this.handleClickColor = this.handleClickColor.bind(this);
         this.handleCloseColor = this.handleCloseColor.bind(this);
+        this.handleClickCheck = this.handleClickCheck.bind(this);
+        this.handleClickCollaboratorClose = this.handleClickCollaboratorClose.bind(this);
+        this.handleClickCollaboratorOpen = this.handleClickCollaboratorOpen.bind(this);
     }
 
     componentDidMount() {
@@ -81,6 +96,7 @@ class OtherNote extends Component {
         //       this.props.history.push("/login");
         //     }
         //   });
+
     }
     
     handleClickColor(event) {
@@ -122,25 +138,61 @@ class OtherNote extends Component {
     };
 
     handleClickClose = () => {
-        this.setState({ open: false });
+        this.setState({open: false });
     };
 
+    handleClickCollaboratorOpen = () => {
+        var email = localStorage.getItem('username');
+        var fullname = localStorage.getItem('user');
+        this.setState({ 
+            opencollaborator: true,
+            userfullname: fullname,
+            useremail: email
+        });
+    }
+
+    handleClickCollaboratorClose = () => {
+        this.setState({ opencollaborator: false });
+    }
+
+    handleClickCheck() {
+        this.setState({ checksharewith: true });
+    }
+
     triggerInputFile() {
-        console.log("Inside trigger");
         this.fileInput.click();
     }
     
-    handleImageChange = (event) => {
-        var image = '';
-        console.log("Inside handleImageChange : " + event.target);
-        console.log("File name :",event.target.files[0].fileName);
-        console.log("File path :",event.target.files[0].filePath);
-        
-        if (event.target.files[0]) {
-            image = event.target.files[0].name;
-        }
-        console.log("Image name :",image);
-        
+    handleImageChange = (event,key,note) => {
+        this.uploadForm(event.target.files[0],key,note);
+    }
+
+    uploadForm(file,key,note){
+        let form = new FormData(this.refs.myForm);
+        form.append('newimage', file);
+
+        fetch('/api/images/uploadimage/'+key, {
+          method: 'POST',
+          body: form,
+        })
+        .then(res => {
+            axios.get('/api/images/uploadimage')
+            .then(res => {
+                this.setState({ images: res.data });
+                // this.state.images.map((image) => {
+                //     if(key === image.noteId) {
+                //         note.image = image.image;
+                //         noteCtrl.onUpdateNote(key,note);
+                //     }
+                // });   
+                this.state.images.forEach(function(image) {
+                    if(key === image.noteId) {
+                        note.image = image.image;
+                        noteCtrl.onUpdateNote(key,note);
+                    }
+                })
+            })
+        });
     }
 
     render() {
@@ -153,18 +205,17 @@ class OtherNote extends Component {
             this.state.notes.map((note) => {
                 if(note.ispin === false && note.isarchive === false && note.istrash === false && userId === note.userId) {
                     return (
-                        <form>
+                        <form id="upload_form" ref="myForm"  encType="multipart/form-data">
                             <div id="submit" className="display-notes-div">
                             <div id="div_element" className="displaynotes column ">
                                 <Card style={{ width: '100%', backgroundColor:note.background, borderRadius:0 }} >
                                     <div style={{ width: '90%', marginTop: 10, marginLeft: 10, fontWeight: 'bolder', position: 'relative' }}>
-                                        {/* {console.log(data.imageUrl)} */}
-                                        {/* {data.imageUrl ?
-                                    <img src={data.imageUrl} alt="data.imageUrl" width='230px'/>
-                                    :
-                                    null
-                                    } */}
-
+                                        {console.log(note.image)} 
+                                        {note.image ?
+                                            <img src={note.image} alt="note" width='230px'/>
+                                            :
+                                            null
+                                        }
                                         <div style={{width:'80%', paddingBottom: 20, paddingTop: 10 }} onClick={this.handleClickOpen}>
                                             {note.notetitle}
                                         </div>
@@ -195,12 +246,20 @@ class OtherNote extends Component {
                                         null
                                     }
 
-                                    {/* {data.label ?
+                                    {note.label ?
                                         <Chip
-                                            label={data.label}
-                                            onDelete={() => this.handleDeleteLabel(key, data)}
+                                            label={note.label}
+                                            onDelete={() => labelCtrl.handleDeleteLabel(note._id, note)}
                                             style={{ borderRadius: 1, height: 24, marginLeft: 10, fontSize: 11 }}
                                         />
+                                        :
+                                        null
+                                    }
+
+                                    {/* {note.sharenotewith ?
+                                        <Avatar>
+                                            {sharewith}
+                                        </Avatar>
                                         :
                                         null
                                     } */}
@@ -238,7 +297,7 @@ class OtherNote extends Component {
 
 
                                         <Tooltip title="Collaborator">
-                                            <IconButton type="submit" color="primary" id="notebuttons">
+                                            <IconButton color="primary" id="notebuttons" onClick={this.handleClickCollaboratorOpen}>
                                                 <img src={collaborator} alt="collaborator" id="noteicons" />
                                             </IconButton>
                                         </Tooltip>
@@ -327,11 +386,12 @@ class OtherNote extends Component {
                                         <input style={{ display: 'none' }}
                                             type="file"
                                             ref={fileInput => this.fileInput = fileInput}
-                                            onChange={(event) => {this.handleImageChange(event)}} 
+                                            onChange={(e) => this.handleImageChange(e,note._id,note)} 
+                                            value={this.state.image}
                                         >
                                         </input>
                                         <Tooltip title="Add image">
-                                            <IconButton color="primary" id="notebuttons" onClick={this.triggerInputFile}>
+                                            <IconButton color="primary" id="notebuttons" onClick={(e) => {this.triggerInputFile()}}>
                                                 <img src={newnotewithimage} alt="newnotewithimage" id="noteicons" />
                                             </IconButton>
                                         </Tooltip>
@@ -479,7 +539,7 @@ class OtherNote extends Component {
                                                             icon={<CheckBoxOutlineBlankIcon style={{ fontSize: 20 }} />}
                                                             checkedIcon={<CheckBoxIcon style={{ fontSize: 20 }} />}
                                                             color="default"
-                                                            onClick={() => {this.getLabel(label._id, label, label.newlabel);this.handleClose()}}
+                                                            onClick={() => {labelCtrl.getLabel(note._id, note, label);this.handleCloseLabel();this.handleClose()}}
                                                         />
                                                     }
                                                     label={label.newlabel}
@@ -496,7 +556,82 @@ class OtherNote extends Component {
                                 })
                                 }
                             </Menu>
-                        </div> 
+
+                            {/* ----------------------- Collaborator -------------------- */}
+                            <div>
+                                <Dialog
+                                    open={this.state.opencollaborator}
+                                    onClose={this.handleClickCollaboratorClose}
+                                    aria-labelledby="alert-dialog-title"
+                                    aria-describedby="alert-dialog-description"
+                                >
+                                    <DialogTitle id="alert-dialog-title">
+                                        Collaborators
+                                    </DialogTitle>
+                                    <Divider id="collaborator-title-divider"></Divider>
+                                    <DialogContent>
+                                        <div>
+                                            <Avatar>
+                                                <PersonIcon />
+                                            </Avatar>
+                                            <div id="collaborator-data-div">
+                                                <span style={{fontWeight: 700}}>{this.state.userfullname}</span><span id="owner-span">(Owner)</span><br></br>
+                                                <span style={{opacity: 0.7}}>{this.state.useremail}</span>
+                                            </div>
+                                        </div>
+
+                                        {note.sharenotewith ?
+                                            <div style={{marginTop:15,height:35}}>
+                                                <Avatar>
+                                                    <PersonIcon />
+                                                </Avatar>
+                                                <div id="collaborator-sharewith-div">
+                                                    <div >
+                                                        {/* <span style={{fontWeight: 700}}>Swati Desale</span><span id="owner-span">(Owner)</span><br></br> */}
+                                                        <span style={{fontWeight: 700}}>{note.sharenotewith}</span>
+                                                    </div>
+                                                    <IconButton id="sharewith-cancel-btn" type="submit">
+                                                        <Cancel style={{marginTop: -12}} onClick={() => {noteCtrl.onDeleteShareWith(note._id,note);this.handleClickCollaboratorClose()}}/>
+                                                    </IconButton>
+                                                </div>
+                                            </div>
+                                            :
+                                            null
+                                        }
+
+                                         <div style={{marginTop:15,height:35}}>
+                                            <Avatar>
+                                                <AddPerson />
+                                            </Avatar>
+                                            <div id="collaborator-sharewith-div">
+                                                <Input
+                                                    id="sharewith-input"
+                                                    disableUnderline={true}  
+                                                    type="text" 
+                                                    placeholder="Person or email to share with" 
+                                                    onInput={e => this.setState({ sharewith: e.target.value })}
+                                                    onChange={this.handleClickCheck}
+                                                />
+                                                {this.state.checksharewith ? 
+                                                    <IconButton id="sharewith-check-btn">
+                                                        <Check type="submit" style={{marginTop: -8,height:17,width:17}} 
+                                                            onClick={() => {noteCtrl.shareNoteWith(this.state.sharewith,note._id,note)}}
+                                                        />
+                                                    </IconButton>
+                                                    :
+                                                    null
+                                                }
+                                            </div>
+                                        </div>
+
+                                    </DialogContent>
+                                    <div id="collaborator-actions">
+                                        <Button id="collaborator-cancel-btn" onClick={() => {this.handleClickCollaboratorClose()}}>cancel</Button>
+                                        <Button id="collaborator-save-btn" onClick={() => {this.handleClickCollaboratorClose();noteCtrl.shareNoteWith(this.state.sharewith,note._id,note)}}>save</Button>
+                                    </div>
+                                </Dialog>
+                            </div>
+                        </div>  
                         </form>
                     );
                 }

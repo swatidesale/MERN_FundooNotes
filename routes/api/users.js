@@ -50,7 +50,6 @@ router.post('/login', (req,res) => {
                     var token = jwt.sign(user.toJSON(), settings.secret);
                     //return the information including token as JSON
                     res.json({success: true, user: user, token: 'JWT ' + token});
-                    res.cookie('token',token,{ httpOnly: true}).sendStatus(200);
                 }
                 else {
                     res.status(402).send({success: false, msg: "Authentication failed, Wrong password"});
@@ -101,7 +100,7 @@ router.post('/forgot', (req,res,next) => {
             var mailOptions = {
                 to: user.username,
                 from: 'sadesale94@gmail.com',
-                subject: 'MERN Stack Fundoo Notes Reset Password',
+                subject: 'Fundoonotes_ResetPassword',
                 text: 'You are receiving this because you (or someone else) have requested the reset' + 
                 ' password for your account.\n\n Please click on following link, or paste this into your' +
                 ' browser to complete the proccess.\n\n' +
@@ -164,7 +163,7 @@ router.post('/reset/:token', function(req, res) {
           from: 'sadesale94@gmail.com',
           subject: 'Your password has been changed',
           text: 'Hello,\n\n' +
-            'This is a confirmation that the password for your account ' + user.username + ' has just been changed.\n'
+            'This is a confirmation mail that the password for your account ' + user.username + ' has just been changed.\n'
         };
         smtpTransport.sendMail(mailOptions, function(err) {
             res.json({success: true, msg: 'Success! Your password has been changed.'})
