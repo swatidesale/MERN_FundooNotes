@@ -3,6 +3,8 @@ const express = require('express');
 const router = express.Router();
 // const multer = require('multer');
 // const path = require('path');
+var async = require('async');
+var nodemailer = require('nodemailer');
 
 // var passport = require('passport');
 // require('../../config/passport')(passport);
@@ -47,7 +49,8 @@ router.post('/notes', (req,res) => {
         background: req.body.background,
         reminder: req.body.reminder,
         label: req.body.label,
-        image: req.body.image
+        image: req.body.image,
+        sharenotewith: req.body.sharenotewith
     });
 
     // newNote.save().then(note => res.json(note));
@@ -112,5 +115,51 @@ router.put('/notes/:id', (req,res,next) => {
 //         return null;
 //     }
 // };
+
+
+router.post('/sharenote', function(req, res) {
+    username = req.body.username;
+    sharewith = req.body.sharenotewith;
+    userfullname = req.body.userfullname;
+
+    async.waterfall([
+      function(done) {
+        Note.findOne({ _id: req.body.key}, function(err, note) {
+            if (!Note) {
+                res.status(401).send({success: false, msg: 'Failed.'});
+            }
+
+            note.sharenotewith = req.body.sharenotewith;
+
+            note.save(function(err) {
+                done(err, note);
+            });
+        });
+      },
+      function(note, done) {
+        var smtpTransport = nodemailer.createTransport({
+          service: 'Gmail',
+          auth: {
+            user: 'sadesale94@gmail.com',
+            pass: 'Sdesale25#'
+          }
+        });
+        var mailOptions = {
+          to: note.sharenotewith,
+          from: userfullname,
+          subject: 'Shared a note with you',
+          text: 'Hello,\n\n' +
+            userfullname + '( ' + username +' )' + 'shared a note with you.\n\n' +
+            'http://localhost:3000/home/notes'
+        };
+
+        smtpTransport.sendMail(mailOptions, function(err) {
+            res.json({success: true, msg: 'Success!.'})
+        });
+      }
+    ], function(err) {
+        res.json({success: false, msg: 'Failed'});
+    });
+  });
 
 module.exports = router;

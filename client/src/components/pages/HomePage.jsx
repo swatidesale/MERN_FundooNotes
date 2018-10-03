@@ -57,7 +57,8 @@ class HomePage extends Component {
             labelopen: false,
             newlabel: null,
             viewbtn: true,
-            opensearch: false
+            opensearch: false,
+            firstletter: null
         };
 
         this.toggleDrawer = this.toggleDrawer.bind(this);
@@ -111,6 +112,12 @@ class HomePage extends Component {
             });
         }
         
+        var userdata = localStorage.getItem('user');
+        var res = userdata.slice(0, 1);
+        var userfirstletter = res.toLowerCase();
+        this.setState({
+            firstletter: userfirstletter
+        })
     }
 
     handleViewClick() {
@@ -254,7 +261,7 @@ class HomePage extends Component {
 
                             {/* <Tooltip title={this.state.user}> */}
                             <IconButton style={{ marginLeft: 3 }} color="inherit" aria-label="Menu" onClick={this.handleClick}>
-                                <span className="signoutbutton">s</span>
+                                <span className="signoutbutton">{this.state.firstletter}</span>
                             </IconButton>
                             {/* </Tooltip> */}
                         </Toolbar>

@@ -6,9 +6,8 @@ const path = require('path');
 
 const Image = require('../../models/Images');
 
-
-// @route GET api/labels
-// @desc GET all labels
+// @route GET api/images
+// @desc GET all images
 // @access Public
 router.get('/uploadimage', (req,res) => {
     Image.find()
@@ -17,7 +16,7 @@ router.get('/uploadimage', (req,res) => {
 });
 
 const storage = multer.diskStorage({
-    destination: './client/src/assets',
+    destination: './public/uploads/',
     filename: function(req, file, cb) {
         cb(null,file.fieldname + '-' + Date.now() + path.extname(file.originalname));
     }
@@ -35,7 +34,7 @@ function checkFileType(file, cb) {
     const filetypes = /jpeg|jpg|png|gif/;
     const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
     const mimetype = filetypes.test(file.mimetype);
-
+    
     if(mimetype && extname) {
         return cb(null,true);
     } else {
@@ -45,9 +44,7 @@ function checkFileType(file, cb) {
 
 router.use(express.static('./public'));
 
-
-router.post('/uploadimage', (req,res) => {
-    console.log("Upload image");
+router.post('/uploadimage/:key', (req,res) => {
     upload(req, res, (err) => {
         if(err) {
             console.log("First err", err);
@@ -56,18 +53,16 @@ router.post('/uploadimage', (req,res) => {
             });
         }
         else if(req.file === undefined) {
-            console.log("NO file selected");
+            console.log("No file selected");
             res.send({
                 msg: 'No File selected'
             });
         }
         else {
-            console.log("FIle uploaded");
-            console.log("Path : ",req.file.filename);
-            console.log("Path : ",req.file.path);
-            
+            console.log("File uploaded");
             const newImage = new Image({
-                image: `/Users/bridgeit/Desktop/swati/MERNFundooApp/${req.file.path}`
+                image: `uploads/${req.file.path}`,
+                noteId: req.params.key
             });
             
             newImage.save((err) => {
@@ -75,28 +70,8 @@ router.post('/uploadimage', (req,res) => {
                     console.log("Failed",err);
                     return res.json({success: false, msg: "Failed"});
                 }
-                res.json({success: true, msg: "Successful."});
+                res.send({success: true, msg: "Successful."});
             });
-
-            // res.json({
-            //     msg: 'File uploaded',
-            //     file: `uploads/${req.file.path}`
-            // });
-
-            // Note.findOne({notetitle: req.body.notetitle}, function(err, note) {
-            //     if (err) {
-            //         return done(err);
-            //     }
-
-            //     note.image = `/Users/bridgeit/Desktop/swati/MERNFundooApp/${req.file.path}`
-            //     console.log("Image.....",note.image);
-                
-            //     note.save(function(err) {
-            //         if (err) {
-            //             throw err;
-            //         }
-            //     });
-            // });
         }
     });
 });

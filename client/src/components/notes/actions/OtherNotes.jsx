@@ -3,6 +3,8 @@ import Card from '@material-ui/core/Card';
 import Menu from '@material-ui/core/Menu';
 import Avatar from '@material-ui/core/Avatar';
 import PersonIcon from '@material-ui/icons/Person';
+import AddPerson from '@material-ui/icons/PersonAdd';
+import { Cancel, Check } from '@material-ui/icons';
 import MenuItem from '@material-ui/core/MenuItem';
 import { Input, Button, Divider } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
@@ -30,6 +32,7 @@ import redo from '../../../assets/icons/redo.svg';
 import axios from 'axios';
 import NoteController from '../../../controllers/NoteController.js';
 import LabelController from '../../../controllers/LabelController';
+// import image from '/Users/bridgeit/Desktop/swati/MERNFundooApp/client/src/assets/newimage-1538389742352.jpeg';
 // import { createBrowserHistory } from 'history';
 
 // const history = createBrowserHistory();
@@ -51,27 +54,28 @@ class OtherNote extends Component {
             notedata: null,
             labels: [],
             images: [],
-            imageUrl: '',
             archive: false,
             color: true,
             opencollaborator: false,
             file: null,
-            imagePreviewUrl: null
+            imagePreviewUrl: null,
+            sharewith: null,
+            checksharewith: false,
+            userfullname: null,
+            useremail: null
         }
 
         this.handleClickLabel = this.handleClickLabel.bind(this);
         this.handleCloseLabel = this.handleCloseLabel.bind(this);
-        // this.handleImageChange = this.handleImageChange.bind(this);
         this.triggerInputFile = this.triggerInputFile.bind(this);
         this.handleClickColor = this.handleClickColor.bind(this);
         this.handleCloseColor = this.handleCloseColor.bind(this);
+        this.handleClickCheck = this.handleClickCheck.bind(this);
         this.handleClickCollaboratorClose = this.handleClickCollaboratorClose.bind(this);
         this.handleClickCollaboratorOpen = this.handleClickCollaboratorOpen.bind(this);
     }
 
     componentDidMount() {
-        console.log("Inside component......");
-        
         axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');
         axios.get('/api/notes/notes')
           .then(res => {
@@ -138,53 +142,58 @@ class OtherNote extends Component {
     };
 
     handleClickCollaboratorOpen = () => {
-        this.setState({ opencollaborator: true });
+        var email = localStorage.getItem('username');
+        var fullname = localStorage.getItem('user');
+        this.setState({ 
+            opencollaborator: true,
+            userfullname: fullname,
+            useremail: email
+        });
     }
 
     handleClickCollaboratorClose = () => {
         this.setState({ opencollaborator: false });
     }
 
+    handleClickCheck() {
+        this.setState({ checksharewith: true });
+    }
+
     triggerInputFile() {
-        console.log("Inside trigger");
         this.fileInput.click();
     }
     
     handleImageChange = (event,key,note) => {
-        console.log('onImageLoad', event.target.files[0]);
         this.uploadForm(event.target.files[0],key,note);
     }
-
-    // onImageLoad(e){
-    //     console.log('onImageLoad', e.target.files[0]);
-    //     this.uploadForm(e.target.files[0]);
-    // }
 
     uploadForm(file,key,note){
         let form = new FormData(this.refs.myForm);
         form.append('newimage', file);
-        fetch('/api/images/uploadimage', {
+
+        fetch('/api/images/uploadimage/'+key, {
           method: 'POST',
           body: form,
-        }).then(res => console.log('res of fetch', res));
-
-
-        // axios.get('/api/images/uploadimage')
-        // .then(res => {
-        //       this.setState({ images: res.data });   
-        // })
-
-        // console.log("Images : ",this.state.images);
-        // note.image = image.image;
-        // noteCtrl.onUpdateNote(key,note);
+        })
+        .then(res => {
+            axios.get('/api/images/uploadimage')
+            .then(res => {
+                this.setState({ images: res.data });
+                // this.state.images.map((image) => {
+                //     if(key === image.noteId) {
+                //         note.image = image.image;
+                //         noteCtrl.onUpdateNote(key,note);
+                //     }
+                // });   
+                this.state.images.forEach(function(image) {
+                    if(key === image.noteId) {
+                        note.image = image.image;
+                        noteCtrl.onUpdateNote(key,note);
+                    }
+                })
+            })
+        });
     }
-
-    // componentDidUpdate() {
-    //     axios.get('/api/images/uploadimage')
-    //     .then(res => {
-    //           this.setState({ images: res.data });   
-    //     });
-    // }
 
     render() {
         const userId = localStorage.getItem('userKey');
@@ -201,18 +210,12 @@ class OtherNote extends Component {
                             <div id="div_element" className="displaynotes column ">
                                 <Card style={{ width: '100%', backgroundColor:note.background, borderRadius:0 }} >
                                     <div style={{ width: '90%', marginTop: 10, marginLeft: 10, fontWeight: 'bolder', position: 'relative' }}>
-                                        {/* {console.log(note.image)}  */}
-                                        {/* {note.image ?
-                                            <img src={note.image} alt="note.image" width='230px'/>
+                                        {console.log(note.image)} 
+                                        {note.image ?
+                                            <img src={note.image} alt="note" width='230px'/>
                                             :
                                             null
-                                        } */}
-                                        {/* {
-                                            this.state.images.map((image) => {
-                                                console.log("Note ID," ,image.noteId );
-                                                
-                                            })
-                                        } */}
+                                        }
                                         <div style={{width:'80%', paddingBottom: 20, paddingTop: 10 }} onClick={this.handleClickOpen}>
                                             {note.notetitle}
                                         </div>
@@ -252,6 +255,14 @@ class OtherNote extends Component {
                                         :
                                         null
                                     }
+
+                                    {/* {note.sharenotewith ?
+                                        <Avatar>
+                                            {sharewith}
+                                        </Avatar>
+                                        :
+                                        null
+                                    } */}
 
                                     <div id="note-btns" style={{ width: 240, height: 40 }}>
                                         <Tooltip title="Reminde me">
@@ -559,18 +570,65 @@ class OtherNote extends Component {
                                     </DialogTitle>
                                     <Divider id="collaborator-title-divider"></Divider>
                                     <DialogContent>
-                                        <Avatar>
-                                            <PersonIcon />
-                                        </Avatar>
-                                        <div id="collaborator-data-div">
-                                            <span style={{fontWeight: 700}}>Swati Desale</span><span id="owner-span">(Owner)</span><br></br>
-                                            <span style={{opacity: 0.7}}>sadesale94@gmail.com</span>
+                                        <div>
+                                            <Avatar>
+                                                <PersonIcon />
+                                            </Avatar>
+                                            <div id="collaborator-data-div">
+                                                <span style={{fontWeight: 700}}>{this.state.userfullname}</span><span id="owner-span">(Owner)</span><br></br>
+                                                <span style={{opacity: 0.7}}>{this.state.useremail}</span>
+                                            </div>
                                         </div>
+
+                                        {note.sharenotewith ?
+                                            <div style={{marginTop:15,height:35}}>
+                                                <Avatar>
+                                                    <PersonIcon />
+                                                </Avatar>
+                                                <div id="collaborator-sharewith-div">
+                                                    <div >
+                                                        {/* <span style={{fontWeight: 700}}>Swati Desale</span><span id="owner-span">(Owner)</span><br></br> */}
+                                                        <span style={{fontWeight: 700}}>{note.sharenotewith}</span>
+                                                    </div>
+                                                    <IconButton id="sharewith-cancel-btn" type="submit">
+                                                        <Cancel style={{marginTop: -12}} onClick={() => {noteCtrl.onDeleteShareWith(note._id,note);this.handleClickCollaboratorClose()}}/>
+                                                    </IconButton>
+                                                </div>
+                                            </div>
+                                            :
+                                            null
+                                        }
+
+                                         <div style={{marginTop:15,height:35}}>
+                                            <Avatar>
+                                                <AddPerson />
+                                            </Avatar>
+                                            <div id="collaborator-sharewith-div">
+                                                <Input
+                                                    id="sharewith-input"
+                                                    disableUnderline={true}  
+                                                    type="text" 
+                                                    placeholder="Person or email to share with" 
+                                                    onInput={e => this.setState({ sharewith: e.target.value })}
+                                                    onChange={this.handleClickCheck}
+                                                />
+                                                {this.state.checksharewith ? 
+                                                    <IconButton id="sharewith-check-btn">
+                                                        <Check type="submit" style={{marginTop: -8,height:17,width:17}} 
+                                                            onClick={() => {noteCtrl.shareNoteWith(this.state.sharewith,note._id,note)}}
+                                                        />
+                                                    </IconButton>
+                                                    :
+                                                    null
+                                                }
+                                            </div>
+                                        </div>
+
                                     </DialogContent>
-                                    <DialogActions id="collaborator-actions">
+                                    <div id="collaborator-actions">
                                         <Button id="collaborator-cancel-btn" onClick={() => {this.handleClickCollaboratorClose()}}>cancel</Button>
-                                        <Button id="collaborator-save-btn" onClick={() => {this.handleClickCollaboratorClose()}}>save</Button>
-                                    </DialogActions>
+                                        <Button id="collaborator-save-btn" onClick={() => {this.handleClickCollaboratorClose();noteCtrl.shareNoteWith(this.state.sharewith,note._id,note)}}>save</Button>
+                                    </div>
                                 </Dialog>
                             </div>
                         </div>  

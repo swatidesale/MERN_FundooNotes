@@ -35,6 +35,9 @@ const NoteSchema = new Schema({
     },
     image: {
         type: String
+    },
+    sharenotewith: {
+        type: String
     }
 });
 

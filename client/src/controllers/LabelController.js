@@ -27,8 +27,6 @@ class LabelController {
     }
 
     getLabel(key, note, label) {
-        console.log("Inside getlabel : ",label.newlabel);
-        
         note.label = label.newlabel;
         noteCtrl.onUpdateNote(key,note);
     }
